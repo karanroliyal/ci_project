@@ -1,0 +1,98 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100vw;
+    height: 100Vh;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+}
+
+/* Global colors start */
+
+.my-color {
+    color: #e9e9e9;
+}
+
+.my-bg-p {
+    background-color: #712cf9;
+}
+
+.my-bg-b {
+    background-color: #212529;
+}
+
+/* Global colors end */
+
+
+/* **************************** Login page css start ********************************* */
+
+.login-page-wrapper {
+
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    padding: 30px;
+
+    .login-main {
+        width: 100%;
+        height: 100%;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        border-radius: 30px;
+        position: relative;
+
+        .login-form {
+            position: relative;
+            padding: 40px;
+        }
+    }
+
+}
+
+
+/* **************************** Login page css end ********************************* */
+
+
+/* **************************** Layout css start ********************************* */
+
+.project-layout-main-wrapper {
+
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    padding: 5px 5px 10px 5px;
+
+    .natigation_main_wrapper {
+        width: 100%;
+        height: 40px;
+        position: relative;
+        margin: 0px 0px;
+        border-radius: 10px;
+        .user-profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .sidebar_content_main_wrapper {
+        width: 100%;
+        height: calc(100% - 40px);
+        margin: 0px 0px;
+        border-radius: 10px;
+        margin: 5px 0px;
+
+        .sidebar_wrapper {
+            border-right: 0.5px solid black;
+        }
+
+        .content_wrapper {}
+    }
+
+
+}
+
+/* **************************** Layout css end ********************************* */
