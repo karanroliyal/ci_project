@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    console.log("Working fine");
+    console.log("Login js is loaded");
 
 
 
@@ -40,7 +40,7 @@ function loginMe() {
                     $(".alert-success").removeClass("d-none")
                     $(".alert-success").text("Login successfully!")
                     $("#loginForm").trigger("reset");
-                    window.location.href= baseUrl+"dashboardcontroller";
+                    window.location.href= baseUrl+"indexcontroller";
                 }
                 else if(data == 0){
                     $(".alert-danger").removeClass("d-none")

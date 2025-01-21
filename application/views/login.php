@@ -1,7 +1,10 @@
-<?php $title = "Login";
-include_once "templates/header.php" ?>
+<?php
 
 
+$title = "Login";
+include_once "templates/header.php" 
+
+?>
 
 
 <div class="container login-page-wrapper">
