@@ -1,3 +1,11 @@
+<?php
+
+if(!isset($_SESSION['email'])){
+    header("location:".base_url()."indexcontroller");
+}
+
+?>
+
 <!DOCTYPE html>
 <head>
 <title><?php echo $title; ?></title>

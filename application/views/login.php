@@ -1,10 +1,22 @@
 <?php
 
-
-$title = "Login";
-include_once "templates/header.php" 
+if(isset($_SESSION['email'])){
+    header("location:".base_url()."indexcontroller");
+}
 
 ?>
+
+<!DOCTYPE html>
+<head>
+<title>Login</title>
+<link rel="stylesheet" href="<?php echo base_url()."/assets/css/bootstrap.min.css" ?>">
+<link rel="stylesheet" href="<?php echo base_url()."/assets/css/style.css" ?>">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="<?php echo base_url()."assets/js/jquery.js" ?>"></script>
+</head>
+<body>
+
+<input type="hidden" id="baseUrl" value="<?php echo base_url(); ?>"  >
 
 
 <div class="container login-page-wrapper">

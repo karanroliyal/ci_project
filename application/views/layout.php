@@ -24,7 +24,7 @@ include_once "templates/header.php" ?>
             
             <div class="sidebar row my-bg-b" >
                 <div class="d-flex flex-column master-links">
-                    <a href="<?=base_url()."/DashboardController"?>" id="dashoard"><i class="bi bi-collection-fill"></i> Dashboard</a>
+                    <a href="<?=base_url()."dashboardcontroller"?>" id="dashoard"><i class="bi bi-collection-fill"></i> Dashboard</a>
                     <a href="#"><i class="bi bi-person-fill-add"></i> User master</a>
                     <a href="#"><i class="bi bi-people-fill"></i> Client master</a>
                     <a href="#"><i class="bi bi-cart-plus-fill"></i> Item master</a>

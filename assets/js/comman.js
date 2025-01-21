@@ -18,7 +18,9 @@ function logout(){
         url: baseUrls+"logincontroller/logout",
         type: "POST",
         success: function(data){
-            window.location.href=baseUrls+"indexcontroller";
+            if(data == "success"){
+                window.location.href=baseUrls+"indexcontroller";
+            }
         }
     })
 
