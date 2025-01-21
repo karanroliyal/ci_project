@@ -14,12 +14,12 @@ function loginMe() {
 
     let checkForm = 1;
 
-    // $("#loginForm input").each(function () {
-    //     if ($(this).val() == "") {
-    //         $(this).parent('.mb-3').find(".error").text('Field is required');
-    //         checkForm = 0;
-    //     }
-    // })
+    $("#loginForm input").each(function () {
+        if ($(this).val() == "") {
+            $(this).parent('.mb-3').find(".error").text('Field is required');
+            checkForm = 0;
+        }
+    })
 
     if(checkForm == 1){
 
