@@ -35,6 +35,7 @@ class LoginController extends CI_Controller
         $this->form_validation->set_rules($inputFieldsValidation);
 
         if($this->form_validation->run()){
+
             // getting data of form after validation from js
             $post = $this->input->post();
     
@@ -48,11 +49,13 @@ class LoginController extends CI_Controller
             }
     
             echo $result['rows'];
+
         }
         else{
+
             echo 11;
+            
         }
-        
     }
 
     public function logout(){

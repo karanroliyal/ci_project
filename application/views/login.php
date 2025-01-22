@@ -64,4 +64,6 @@ if(isset($_SESSION['email'])){
 
 
 <script src="<?php echo base_url() . "assets/js/login.js" ?>"></script>
-<?php include_once "templates/footer.php" ?>
+<script src="<?php echo base_url()."assets/js/bootstrap.min.js" ?>"></script>
+</body>
+</html>

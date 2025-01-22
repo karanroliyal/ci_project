@@ -6,7 +6,7 @@ if (!isset($_SESSION['email'])) {
     exit;
 }
 else{
-    header("location:".base_url()."dashboardcontroller/layout");
+    header("location:".base_url()."pagescontroller");
     exit;
 }
 

@@ -115,6 +115,10 @@ body {
                     color: #0d6efd;
                     background-color: white;
                 }
+                .activeTab{
+                    color: #0d6efd;
+                    background-color: white;
+                }
 
                 .master-links{
                     gap: 20px;
@@ -127,7 +131,25 @@ body {
 
         }
 
-        .content_wrapper {}
+        .content_wrapper {
+
+            padding: 0px 20px;
+
+            #liveSearchForm{
+                padding: 20px 20px 30px 20px;
+                box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                border-radius: 10px;
+            }
+            .tab-padding{
+                padding: 10px;
+            }
+            #tableData{
+                padding: 20px 20px 30px 20px;
+                box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                border-radius: 10px;
+            }
+
+        }
     }
 
 

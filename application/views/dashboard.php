@@ -1,50 +1,157 @@
 <?php $title = "Dashboard";
 include_once "templates/header.php" ?>
 
-
 <div class="project-layout-main-wrapper">
 
     <div class="d-flex natigation_main_wrapper align-items-center bg-primary-my">
-        <div class="col-md-2">
-            <img src="<?= base_url() . "assets/images/logo.png" ?>" class="logo" width="75%"  alt="logo">
-        </div>
-        <div class="col-md-10 row justify-content-between align-items-center">
-            <div class="col-md-2">
-                <i class="bi bi-list text-light"></i>
-            </div>
-            <div class="col-md-2 d-flex align-items-center profile_section">
-                <small class="text-light user-name"><b>karan rawat</b></small>
-                <img class="user-profile-image rounded-circle" title="karan rawat" src="<?= base_url()."profiles/pro1.webp"?>" alt="<?="karan"?>">
-            </div>
-        </div>
+        <?php include_once "templates/navigation.php"; ?>
     </div>
 
     <div class="row sidebar_content_main_wrapper ">
 
-        <div class="col-md-2 sidebar_wrapper ">
-            
-            <div class="sidebar row my-bg-b" >
-                <div class="d-flex flex-column master-links">
-                    <a href="#"><i class="bi bi-collection-fill"></i> Dashboard</a>
-                    <a href="#"><i class="bi bi-person-fill-add"></i> User master</a>
-                    <a href="#"><i class="bi bi-people-fill"></i> Client master</a>
-                    <a href="#"><i class="bi bi-cart-plus-fill"></i> Item master</a>
-                    <a href="#"><i class="bi bi-file-earmark-text-fill"></i> Invoice</a>
-                </div>
-                 <div class="logout-link">
-                    <a href="#"><i class="bi bi-box-arrow-left"></i> Logout</a>
-                 </div>
-            </div>    
+        <div class="col-md-2 sidebar_wrapper">
+
+            <?php include_once "templates/sidebar.php"; ?>
 
 
         </div>
+
         <div class="col-md-10 content_wrapper">
-            dashboard
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">All user</button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Add user</button>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <!-- Live search form with users table  -->
+                <div class="tab-pane fade show active tab-padding" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                    <div class="w-100">
+
+                        <!-- Live search form start -->
+                        <form class="tableDataForm row align-items-center my-bg-b my-color " id="liveSearchForm">
+
+                            <div class="col-md-1 col-sm-6 col-xl-1">
+                                <label for="" class="form-label">Id</label>
+                                <input type="number" name="id" class="form-control">
+                            </div>
+
+                            <div class="col-md-3 col-sm-6 col-xl-3">
+                                <label for="" class="form-label">Name</label>
+                                <input type="text" name="name" class="form-control">
+                            </div>
+
+                            <div class="col-md-3 col-sm-6 col-xl-3">
+                                <label for="" class="form-label">Phone</label>
+                                <input type="text" name="phone" class="form-control">
+                            </div>
+
+                            <div class="col-md-3 col-sm-6 col-xl-3">
+                                <label for="" class="form-label">Email</label>
+                                <input type="text" name="email" class="form-control">
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-xl-2 mt-4 d-flex justify-content-center">
+                                <button type="reset" class="btn btn-danger ">reset</button>
+                            </div>
+
+                            <input type="hidden" name="table_name" value="user_master">
+                            <input type="hidden" name="columnToShow" value="id,name,email,phone">
+                            <input type="hidden" name="currentPage" value="1">
+                            <input type="hidden" name="pageLimit" value="5">
+                            <input type="hidden" name="sortOn">
+                            <input type="hidden" name="sortOrder">
+
+                        </form>
+                        <!-- Live search form end -->
+
+                        <!-- Showing Data table start  -->
+
+                        <div class="table-container mt-4">
+
+                            <table class="table">
+
+                                <thead>
+                                    <th>Sno.</th>
+                                    <th>Id <i class="bi bi-arrow-down-up"></i></th>
+                                    <th>Name <i class="bi bi-arrow-down-up"></i></th>
+                                    <th>Email <i class="bi bi-arrow-down-up"></i></th>
+                                    <th>Phone <i class="bi bi-arrow-down-up"></i></th>
+                                    <th colspan="2">Action</th>
+                                </thead>
+
+                            </table>
+
+
+                        </div>
+
+                        <!-- Showing Data table end  -->
+
+
+                    </div>
+
+                </div>
+                <!-- Adding Data into database -->
+                <div class="tab-pane fade tab-padding" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+                    <!-- Data form Start  -->
+                    <form class="row " id="tableData">
+
+                        <div class="col-md-6 mb-3">
+                            <label for="nameId" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="nameId" name="name" maxlength="70">
+                            <small class="text-danger error"></small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phoneId" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="phoneId" name="phone" maxlength="10">
+                            <small class="text-danger error"></small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="emailId" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="emailId" name="email" maxlength="100">
+                            <small class="text-danger error"></small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="passwordId" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="passwordId" name="password" maxlength="15">
+                            <small class="text-danger error"></small>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="imageId" class="form-label">Profile</label>
+                            <input type="file" class="form-control" id="imageId" name="image" accept=".jpg, .jpeg, .png, .gif">
+                            <small class="text-danger error"></small>
+                        </div>
+
+                        <input type="hidden" id="userId" name="id">
+                        <input type="hidden" name="table" value="user_master">
+                        <input type="hidden" name="upload-path-of-image" value="./profiles">
+
+                        <div class="col-md-2 mt-4">
+                            <button type="button" class="add-user btn btn-dark" onclick="sendData()">Add user</button>
+                            <button type="button" class="update-user d-none btn btn-dark">Update user</button>
+                        </div>
+
+                        <!-- Backend Alerts  -->
+                        <div class="alert alert-success my-backend-success d-none" style="position: absolute;width: 35%;right: 10px; top:10px" role="alert">
+                        </div>
+                        <div class="alert alert-danger my-backend-error d-none" style="position: absolute;width: 35%;right: 10px; top:10px" role="alert">
+                        </div>
+                        <!-- Backend Alerts  -->
+
+                    </form>
+                    <!-- Data form End  -->
+
+                </div>
+            </div>
+
+
+
+
         </div>
 
     </div>
-
-
 
 </div>
 

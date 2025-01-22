@@ -1,4 +1,4 @@
-<?php $title = "Layout";
+<?php $title = "Invoice";
 include_once "templates/header.php" ?>
 
 <div class="project-layout-main-wrapper">
@@ -17,7 +17,7 @@ include_once "templates/header.php" ?>
         </div>
 
         <div class="col-md-10 content_wrapper">
-            layout
+            Invoice
         </div>
 
     </div>
