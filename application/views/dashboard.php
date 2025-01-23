@@ -31,7 +31,7 @@ include_once "templates/header.php" ?>
                     <div class="w-100">
 
                         <!-- Live search form start -->
-                        <form class="tableDataForm row align-items-center my-bg-b my-color " id="liveSearchForm">
+                        <form class="tableDataForm row align-items-center my-bg-b my-color" id="liveSearchForm">
 
                             <div class="col-md-1 col-sm-6 col-xl-1">
                                 <label for="" class="form-label">Id</label>
@@ -57,19 +57,44 @@ include_once "templates/header.php" ?>
                             </div>
 
                             <input type="hidden" name="table_name" value="user_master">
-                            <input type="hidden" name="columnToShow" value="id,name,email,phone">
-                            <input type="hidden" name="currentPage" value="1">
-                            <input type="hidden" name="pageLimit" value="5">
+                            <input type="hidden" name="columnToShow" value="id,name,email,phone"> <!-- order also be same as table shown on frontend -->
+                            <input type="hidden" name="currentPage" id="pageId" value="1">
+                            <input type="hidden" name="pageLimit" id="limit" value="5">
                             <input type="hidden" name="sortOn">
                             <input type="hidden" name="sortOrder">
 
                         </form>
                         <!-- Live search form end -->
 
-                        <!-- Showing Data table start  -->
-
+                        <!-- Dynamic table and pagination start  -->
                         <div class="table-container mt-4">
 
+                            <!-- pagination and limit of records select start  -->
+                            <div class="d-flex justify-content-between align-items-end mb-4">
+
+                                <!-- select limit  -->
+                                <div>
+                                    <label for="rowId" class="form-label">Select no. of rows</label>
+                                    <select id="rowId" class="form-select">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                </div>
+                                <!-- select limit  -->
+
+                                <!-- pagination  -->
+                                <div class="dynamicPagination">
+                                    <!-- dynamic pagination comes here  -->
+                                    js
+                                </div>
+                                <!-- pagination  -->
+
+                            </div>
+                            <!-- pagination and limit of records select end  -->
+
+                            <!-- Showing Data table start  -->
                             <table class="table">
 
                                 <thead>
@@ -78,15 +103,19 @@ include_once "templates/header.php" ?>
                                     <th>Name <i class="bi bi-arrow-down-up"></i></th>
                                     <th>Email <i class="bi bi-arrow-down-up"></i></th>
                                     <th>Phone <i class="bi bi-arrow-down-up"></i></th>
-                                    <th colspan="2">Action</th>
+                                    <th>Action</th>
                                 </thead>
 
-                            </table>
+                                <tbody class="myDynamicTable">
+                                    <!-- here my dynamic table will come  -->
+                                </tbody>
 
+                            </table>
+                            <!-- Showing Data table end  -->
 
                         </div>
+                        <!-- Dynamic table and pagination end  -->
 
-                        <!-- Showing Data table end  -->
 
 
                     </div>

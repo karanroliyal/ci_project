@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 html,
@@ -26,6 +27,30 @@ body {
 }
 
 /* Global colors end */
+
+/* scroll bar css start  */
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* scroll bar css end  */
 
 
 /* **************************** Login page css start ********************************* */
@@ -71,19 +96,23 @@ body {
         position: relative;
         margin: 0px 0px;
         border-radius: 10px;
+
         .user-profile-image {
             width: 30px;
             height: 30px;
             object-fit: cover;
         }
-        .logo{
+
+        .logo {
             filter: brightness(0) invert(1);
             margin-left: 20px;
         }
-        .user-name{
+
+        .user-name {
             font-size: 70%;
         }
-        .profile_section{
+
+        .profile_section {
             gap: 15px;
             justify-content: end;
             position: relative;
@@ -99,31 +128,34 @@ body {
 
         .sidebar_wrapper {
 
-            .sidebar{
+            .sidebar {
                 height: 100%;
                 padding: 20px 0px;
                 border-radius: 10px;
 
-                a{
+                a {
                     padding: 10px;
                     text-decoration: none;
                     color: white;
                     border-radius: 5px;
                     cursor: pointer;
                 }
-                a:hover{
-                    color: #0d6efd;
-                    background-color: white;
-                }
-                .activeTab{
+
+                a:hover {
                     color: #0d6efd;
                     background-color: white;
                 }
 
-                .master-links{
+                .activeTab {
+                    color: #0d6efd;
+                    background-color: white;
+                }
+
+                .master-links {
                     gap: 20px;
                 }
-                .logout-link{
+
+                .logout-link {
                     margin-top: auto;
                 }
 
@@ -134,16 +166,20 @@ body {
         .content_wrapper {
 
             padding: 0px 20px;
+            height: 100%;
+            overflow-y: auto;
 
-            #liveSearchForm{
+            #liveSearchForm {
                 padding: 20px 20px 30px 20px;
                 box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
                 border-radius: 10px;
             }
-            .tab-padding{
+
+            .tab-padding {
                 padding: 10px;
             }
-            #tableData{
+
+            #tableData {
                 padding: 20px 20px 30px 20px;
                 box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
                 border-radius: 10px;

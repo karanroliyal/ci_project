@@ -289,7 +289,7 @@ function sendData() {
 
 // resetting form on click of homeTab
 
-$("#nav-home-tab").on('click', function(){
+$("#nav-home-tab").on('click', function () {
 
     $("#tableData").trigger("reset");
     $("#tableData .error").text("");
@@ -297,25 +297,93 @@ $("#nav-home-tab").on('click', function(){
 })
 
 
-// Table creation Dynamically and Live Search
+// Table creation Dynamically and Live Search AJAX call start **********************************************************
 
-function getTable(){
+function getTable() {
     let formData = new FormData(liveSearchForm);
-
+    
     $.ajax({
-
-        url: baseUrls+"tablecontroller",
+        
+        url: baseUrls + "tablecontroller",
         type: "POST",
         data: formData,
         processData: false,
         contentType: false,
-        success: function(data){
+        success: function (data) {
             data = JSON.parse(data);
             console.log(data);
+            $(".myDynamicTable").html(data.table)
+            $(".dynamicPagination").html(data.pagination)
         }
-
+        
     })
 }
+
+// Table creation Dynamically and Live Search AJAX call end **********************************************************
+
+
+// Live data Search start *******************************************************
+
+$("#liveSearchForm input").on('input', function () {
+
+    getTable();
+
+})
+
+// Live data Search end **********************************************************
+
+// Pagination  start *****************************
+
+$(document).on("click", ".my-pagination .li", function () {
+    let page = $(this).attr("id");
+    
+    $("#pageId").val(page);
+    
+    console.log(page);
+    getTable();
+});
+
+// next button pagination
+$(document).on('click', '.next', function () {
+    
+    let page = $(this).parents('.my-pagination').find('.active').attr('id');
+    let totalPage = $(".my-pagination").attr("id");
+    console.log(totalPage)
+    page = Number(page) + 1;
+    if (page <= totalPage) {
+        $("#pageId").val(page);
+        getTable();
+    }
+    
+})
+
+// previous button pagination
+$(document).on('click', '.prev', function () {
+    
+    let page = $(this).parents('.my-pagination').find('.active').attr('id');
+    page = Number(page) - 1;
+    console.log(page)
+    if(page>0){
+        $("#pageId").val(page);
+        getTable();
+    }
+    
+})
+
+// Pagination  end *******************************
+
+
+// selecting limit of records start **************************************
+
+$("#rowId").on('input' , function () {
+
+    let value = $(this).val();
+    $("#limit").val(value);
+    getTable();
+
+})
+
+// selecting limit of records end ******************************************
 
 
 
