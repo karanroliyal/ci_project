@@ -326,6 +326,7 @@ function getTable() {
 
 $("#liveSearchForm input").on('input', function () {
 
+    $("#pageId").val(1);
     getTable();
 
 })
@@ -384,6 +385,27 @@ $("#rowId").on('input' , function () {
 })
 
 // selecting limit of records end ******************************************
+
+// sorting on table start **********
+
+let sortOrder = "DESC";
+$(document).on('click' , ".sortingClass" ,  function() {
+
+    if(sortOrder == "DESC"){
+        sortOrder = "ASC";
+    }else{
+        sortOrder = "DESC";
+    }
+    $sortOn = $(this).data("sort");
+
+    $("#sortOrder").val(sortOrder);
+    $("#sortOn").val($sortOn);
+
+    getTable();
+
+})
+
+// sorting on table end **********
 
 
 

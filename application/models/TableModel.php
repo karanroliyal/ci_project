@@ -27,12 +27,25 @@ class TableModel extends CI_Model
         $current_page_opened = $liveFormData['currentPage']; // which page is open
         unset($liveFormData['currentPage']);
 
+        if(!empty($liveFormData['sortOn'])){
+            $sortOn = $liveFormData['sortOn']; // sorting on this column
+        }
+        unset($liveFormData['sortOn']);
+        
+        if(!empty($liveFormData['sortOrder'])){
+            $sortOrder = $liveFormData['sortOrder']; // sorting order by
+        }
+        unset($liveFormData['sortOrder']);
+
 
         // Offset of data
         $offset = ($current_page_opened - 1) * $limit;
 
         foreach ($liveFormData as $key => $value) {
             $this->db->like($key, $value);
+        }
+        if(!empty($sortOn) && !empty($sortOrder)){
+            $this->db->order_by($sortOn, $sortOrder);
         }
         $result = $this->db->select($column_names_of_table)->get($table_name, $limit, $offset);
 
