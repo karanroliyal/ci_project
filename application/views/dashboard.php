@@ -53,15 +53,16 @@ include_once "templates/header.php" ?>
                                 <input type="text" name="email" class="form-control">
                             </div>
                             <div class="col-md-2 col-sm-6 col-xl-2 mt-4 d-flex justify-content-center">
-                                <button type="reset" class="btn btn-danger ">reset</button>
+                                <button onclick="resetLoadTable()" type="reset" class="btn btn-danger">reset</button>
                             </div>
 
                             <input type="hidden" name="table_name" value="user_master">
                             <input type="hidden" name="columnToShow" value="id,name,email,phone"> <!-- order also be same as table shown on frontend -->
                             <input type="hidden" name="currentPage" id="pageId" value="1">
                             <input type="hidden" name="pageLimit" id="limit" value="5">
-                            <input type="hidden" name="sortOn" id="sortOn">
-                            <input type="hidden" name="sortOrder" id="sortOrder">
+                            <input type="hidden" name="sortOn" id="sortOn" value="id">
+                            <input type="hidden" name="sortOrder" id="sortOrder" value="DESC">
+
 
                         </form>
                         <!-- Live search form end -->
@@ -151,15 +152,18 @@ include_once "templates/header.php" ?>
                             <label for="imageId" class="form-label">Profile</label>
                             <input type="file" class="form-control" id="imageId" name="image" accept=".jpg, .jpeg, .png, .gif">
                             <small class="text-danger error"></small>
+                            <div>
+                                <img class="mt-3" id="myUploadView" width="10%" src="">
+                            </div>
                         </div>
 
                         <input type="hidden" id="userId" name="id">
                         <input type="hidden" name="table" value="user_master">
-                        <input type="hidden" name="upload-path-of-image" value="./profiles">
+                        <input type="hidden" id="imagePath" name="upload-path-of-image" value="./profiles">
 
                         <div class="col-md-2 mt-4">
                             <button type="button" class="add-user btn btn-dark" onclick="sendData()">Add user</button>
-                            <button type="button" class="update-user d-none btn btn-dark">Update user</button>
+                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()">Update user</button>
                         </div>
 
                         <!-- Backend Alerts  -->

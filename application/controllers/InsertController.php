@@ -15,6 +15,18 @@ class InsertController extends CI_Controller
     {
         $table_name = $this->input->post('table');
 
+        $this->load->helper('uniqueness');
+
+        $is_unique_email = uniqueHelper('email', $table_name , $this->input->post('email') , 'id' , $this->input->post('id') );
+        $is_unique_phone = uniqueHelper('phone', $table_name , $this->input->post('phone') , 'id' , $this->input->post('id') );
+
+        if(!empty(trim($this->input->post('password')))){
+            $required_password = "|required|trim";
+        }
+        else{
+            $required_password = "";
+        }
+
         // form validation from php
         $fields = [
             [
@@ -25,17 +37,23 @@ class InsertController extends CI_Controller
             [
                 'field' => 'email',
                 'label' => 'Email',
-                'rules' => 'required|trim|valid_emails|is_unique[' . $table_name . '.email]'
+                'rules' => 'required|trim|valid_emails' . $is_unique_email,
+                "errors" => [
+                    'is_unique' => 'The %s is already exist.',
+                ],
             ],
             [
                 'field' => 'password',
                 'label' => 'Password',
-                'rules' => 'required|trim|min_length[8]|max_length[15]'
+                'rules' => 'min_length[8]|max_length[15]'.$required_password,
             ],
             [
                 'field' => 'phone',
-                'label' => 'Phone',
-                'rules' => 'required|trim|exact_length[10]|numeric|is_unique[' . $table_name . '.phone]'
+                'label' => 'Phone number',
+                'rules' => 'required|trim|exact_length[10]|numeric'.$is_unique_phone,
+                "errors" => [
+                    'is_unique' => 'The %s is already exist.',
+                ],
             ],
             [
                 'field' => 'gender[]',
@@ -58,10 +76,12 @@ class InsertController extends CI_Controller
         });
 
         // validation for image
-        if (empty($_FILES['image']['name'])) {
-            $this->form_validation->set_rules("image", "Image", 'required');
-            array_push($keys, 'image');
-            array_push($values, form_error('image'));
+        if (!$this->input->post('action') == "update"){
+            if (empty($_FILES['image']['name'])) {
+                $this->form_validation->set_rules("image", "Image", 'required');
+                array_push($keys, 'image');
+                array_push($values, form_error('image'));
+            }
         }
         // setting rules for form here 
         $this->form_validation->set_rules($fields_to_validate);
@@ -70,6 +90,7 @@ class InsertController extends CI_Controller
         if ($this->form_validation->run()) {
 
             // Uploading image here 
+            
             $path = $_POST['upload-path-of-image'];
 
             // image configration
@@ -81,21 +102,22 @@ class InsertController extends CI_Controller
 
             // images uploading here
             if (!$this->upload->do_upload('image')) {
-
-                $error = $this->upload->display_errors();
-                echo json_encode(['imageError' => $error, 'fields' => 'image']);
-                
+                if(!empty($_FILES['image']['name'])){
+                    $error = $this->upload->display_errors();
+                    echo json_encode(['imageError' => $error, 'fields' => 'image']);
+                }
             } else {
 
                 // getting form data
                 $postData = $this->input->post();
                 $imageData = $this->upload->data(); // getting image all data 
-                $postData['image'] = $imageData['file_name']; // getting file name 
+                $postData['image'] = $imageData['file_name']; // getting file name
+                if ($this->input->post('action') == "update") {
+                    $postData['action'] = "update"; 
+                }
                 $this->load->model('insertmodel');
                 $modelData = $this->insertmodel->insert($postData);
-                // echo json_encode(["formData"=>$postData , "image_path"=>$path , "success"=>true]);
                 echo $modelData;
-                // print_r($modelData);
 
             }
         }

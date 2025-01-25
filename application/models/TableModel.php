@@ -27,26 +27,13 @@ class TableModel extends CI_Model
         $current_page_opened = $liveFormData['currentPage']; // which page is open
         unset($liveFormData['currentPage']);
 
-        if(!empty($liveFormData['sortOn'])){
-            $sortOn = $liveFormData['sortOn']; // sorting on this column
-        }
-        unset($liveFormData['sortOn']);
-        
-        if(!empty($liveFormData['sortOrder'])){
-            $sortOrder = $liveFormData['sortOrder']; // sorting order by
-        }
-        unset($liveFormData['sortOrder']);
-
-
         // Offset of data
         $offset = ($current_page_opened - 1) * $limit;
 
         foreach ($liveFormData as $key => $value) {
             $this->db->like($key, $value);
         }
-        if(!empty($sortOn) && !empty($sortOrder)){
-            $this->db->order_by($sortOn, $sortOrder);
-        }
+        $this->db->order_by($sort_on_column, $order_by);
         $result = $this->db->select($column_names_of_table)->get($table_name, $limit, $offset);
 
         $offset += 1;
@@ -58,10 +45,16 @@ class TableModel extends CI_Model
                 $table .= "<tr><td>$offset</td>";
                 for ($i = 0; $i < count($column_names_of_table); $i++) {
 
-                    $table .= "<td>{$row[$column_names_of_table[$i]]}</td>";
+                    $table .= "<td>".ucwords($row[$column_names_of_table[$i]])."</td>";
                 }
                 $offset++;
-                $table .= "<td>Update</td><td>Delete</td></tr>";
+                $table .= "<td class='text-center'>
+                <button class='btn btn-primary rounded-circle' id='editBtn'  data-editid='{$row[$column_names_of_table[0]]}' data-key='".array_values($column_names_of_table)[0]."' data-tableName='{$table_name}'><i class='bi bi-pencil-fill'></i></button>
+                </td>
+                <td class='text-center'>
+                <button class='btn btn-danger rounded-circle' id='deleteBtn' data-deleteid='{$row[$column_names_of_table[0]]}' data-tableName='{$table_name}'><i class='bi bi-x-square-fill'></i></button>
+                </td>
+                </tr>";
             }
 
             $this->load->helper('pagination');
@@ -69,11 +62,9 @@ class TableModel extends CI_Model
 
 
             return json_encode(['table' => $table, 'pagination' => $ulData]);
-
         } else {
 
             return json_encode(['table' => "<td class='text-center' colspan='" . (count($column_names_of_table) + 3) . "'><h4>No record found</h4></td>", 'pagination' => ""]);
-
         }
     }
 }

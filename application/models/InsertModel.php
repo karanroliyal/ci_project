@@ -9,15 +9,25 @@ class InsertModel extends CI_Model
     function insert($formData)
     {
 
-        unset($formData['id']);
+        $update = "";
+        if (isset($formData['action'])) {
+            $id = $formData['id'];
+            unset($formData['id']);
+            $update = $formData['action'];
+            unset($formData['action']);
+        } else {
+            unset($formData['id']);
+        }
 
-        if ($formData['upload-path-of-image']) {
+        if (isset($formData['upload-path-of-image'])) {
             unset($formData['upload-path-of-image']);
         }
 
         $table_name = $formData['table'];
 
         unset($formData['table']);
+
+
 
         // array element to String 
         foreach ($formData as $key => $value) {
@@ -28,10 +38,14 @@ class InsertModel extends CI_Model
             }
         }
 
-        $this->db->insert($table_name, $formData);
+        if($update == 'update'){
+            $this->db->where('id', $id);
+            $this->db->update($table_name, $formData);
+        }else{
+            $this->db->insert($table_name, $formData);
+        }
+
 
         return json_encode(['status' => 'success', 'form' => $formData, 'table_name' => $table_name]);
-
-
     }
 }
