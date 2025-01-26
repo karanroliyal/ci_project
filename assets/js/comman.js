@@ -194,10 +194,13 @@ function sendData() {
         if ($(this).is("input[name=id]")) {
             return; // This will skip the current loop for id
         }
-        if ($(".add-user").hasClass('d-none') && $("input:password") && $("input:file")) {
-            return; // This will skip the current loop for password and file type
-        }
         if ($(this).val() == "") {
+            if($(".add-user").hasClass('d-none') && $("input:file").val()==""){
+                return;
+            }
+            if($(".add-user").hasClass('d-none') && $("input:password").val()==""){
+                return;
+            }
             $(this).parent('.mb-3').find(".error").text('Field is required');
             checkForm = 0;
         }

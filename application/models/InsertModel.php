@@ -9,15 +9,8 @@ class InsertModel extends CI_Model
     function insert($formData)
     {
 
-        $update = "";
-        if (isset($formData['action'])) {
-            $id = $formData['id'];
-            unset($formData['id']);
-            $update = $formData['action'];
-            unset($formData['action']);
-        } else {
-            unset($formData['id']);
-        }
+
+        unset($formData['id']);
 
         if (isset($formData['upload-path-of-image'])) {
             unset($formData['upload-path-of-image']);
@@ -38,14 +31,24 @@ class InsertModel extends CI_Model
             }
         }
 
-        if($update == 'update'){
-            $this->db->where('id', $id);
-            $this->db->update($table_name, $formData);
-        }else{
-            $this->db->insert($table_name, $formData);
-        }
+
+        $this->db->insert($table_name, $formData);
 
 
+        return json_encode(['status' => 'success', 'form' => $formData, 'table_name' => $table_name]);
+    }
+
+
+    function update($formData)
+    {
+
+        $id = $formData['id'];
+        unset($formData['id']);
+        $table_name = $formData['table'];
+        unset($formData['table']);
+
+        $this->db->where('id', $id);
+        $this->db->update($table_name, $formData);
         return json_encode(['status' => 'success', 'form' => $formData, 'table_name' => $table_name]);
     }
 }

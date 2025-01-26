@@ -101,23 +101,34 @@ class InsertController extends CI_Controller
             $this->load->library('upload', $config);
 
             // images uploading here
-            if (!$this->upload->do_upload('image')) {
+            if (!$this->upload->do_upload('image') && !$this->input->post('action') == "update" ) {
                 if(!empty($_FILES['image']['name'])){
                     $error = $this->upload->display_errors();
                     echo json_encode(['imageError' => $error, 'fields' => 'image']);
                 }
+                echo "here i am ";
             } else {
 
                 // getting form data
                 $postData = $this->input->post();
-                $imageData = $this->upload->data(); // getting image all data 
-                $postData['image'] = $imageData['file_name']; // getting file name
-                if ($this->input->post('action') == "update") {
-                    $postData['action'] = "update"; 
+                if(!empty($_FILES['image']['name'])){
+                    $imageData = $this->upload->data(); // getting image all data 
+                    $postData['image'] = $imageData['file_name']; // getting file name
                 }
                 $this->load->model('insertmodel');
-                $modelData = $this->insertmodel->insert($postData);
-                echo $modelData;
+                if($this->input->post('action') == "update"){
+                    unset($postData['upload-path-of-image']);
+                    unset($postData['action']);
+                    if(empty(trim($postData['password']))){
+                        unset($postData['password']);
+                    }
+                    $modelData = $this->insertmodel->update($postData);
+                    echo $modelData;
+                }
+                else{
+                    $modelData = $this->insertmodel->insert($postData);
+                    echo $modelData;
+                }
 
             }
         }
