@@ -56,6 +56,26 @@ class InsertController extends CI_Controller
                 ],
             ],
             [
+                'field' => 'pincode',
+                'label' => 'Pincode',
+                'rules' => 'required|trim|max_length[6]|numeric',
+            ],
+            [
+                'field' => 'state',
+                'label' => 'State',
+                'rules' => 'required|trim|numeric',
+            ],
+            [
+                'field' => 'district',
+                'label' => 'District',
+                'rules' => 'required|trim|numeric',
+            ],
+            [
+                'field' => 'address',
+                'label' => 'Address',
+                'rules' => 'required|trim',
+            ],
+            [
                 'field' => 'gender[]',
                 'label' => 'Gender',
                 'rules' => 'required|trim'
@@ -76,13 +96,13 @@ class InsertController extends CI_Controller
         });
 
         // validation for image
-        if (!$this->input->post('action') == "update"){
-            if (empty($_FILES['image']['name'])) {
-                $this->form_validation->set_rules("image", "Image", 'required');
-                array_push($keys, 'image');
-                array_push($values, form_error('image'));
-            }
-        }
+        // if (!$this->input->post('action') == "update"){
+        //     if (empty($_FILES['image']['name'])) {
+        //         $this->form_validation->set_rules("image", "Image", 'required');
+        //         array_push($keys, 'image');
+        //         array_push($values, form_error('image'));
+        //     }
+        // }
         // setting rules for form here 
         $this->form_validation->set_rules($fields_to_validate);
 
@@ -90,18 +110,19 @@ class InsertController extends CI_Controller
         if ($this->form_validation->run()) {
 
             // Uploading image here 
+            if(isset($_POST['upload-path-of-image'])){
+                $path = $_POST['upload-path-of-image'];
+                // image configration
+                $config['upload_path'] = $path;
+            }
             
-            $path = $_POST['upload-path-of-image'];
-
-            // image configration
-            $config['upload_path'] = $path;
             $config['allowed_types'] = 'jpg|png|gif|jpeg';
             $config['encrypt_name'] = TRUE;
 
             $this->load->library('upload', $config);
 
             // images uploading here
-            if (!$this->upload->do_upload('image') && !$this->input->post('action') == "update" ) {
+            if (!$this->upload->do_upload('image') && !$this->input->post('action') == "update" &&  isset($_POST['upload-path-of-image'])) {
                 if(!empty($_FILES['image']['name'])){
                     $error = $this->upload->display_errors();
                     echo json_encode(['imageError' => $error, 'fields' => 'image']);
@@ -119,7 +140,7 @@ class InsertController extends CI_Controller
                 if($this->input->post('action') == "update"){
                     unset($postData['upload-path-of-image']);
                     unset($postData['action']);
-                    if(empty(trim($postData['password']))){
+                    if(isset($postData['password']) && empty(trim($postData['password']))){
                         unset($postData['password']);
                     }
                     $modelData = $this->insertmodel->update($postData);

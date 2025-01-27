@@ -27,6 +27,22 @@ class TableModel extends CI_Model
         $current_page_opened = $liveFormData['currentPage']; // which page is open
         unset($liveFormData['currentPage']);
 
+        if( in_array('address', $column_names_of_table) && in_array('state', $column_names_of_table) && in_array('district', $column_names_of_table)  ){
+            // unset($column_names_of_table[4]);
+            // unset($column_names_of_table[5]);
+            // unset($column_names_of_table[6]);
+            // echo "hello";
+
+            array_splice($column_names_of_table , 4 , 3 );
+            $column_names_of_table[4] = 'concat_ws("," , address , state , district)';
+            $column_names_of_table[5] = 'pincode';
+
+        }
+
+
+
+        
+
         // Offset of data
         $offset = ($current_page_opened - 1) * $limit;
 
@@ -44,12 +60,11 @@ class TableModel extends CI_Model
             foreach ($result->result_array() as $row) {
                 $table .= "<tr><td>$offset</td>";
                 for ($i = 0; $i < count($column_names_of_table); $i++) {
-
-                    $table .= "<td>".ucwords($row[$column_names_of_table[$i]])."</td>";
+                    $table .= "<td>" . ucwords($row[$column_names_of_table[$i]]) . "</td>";
                 }
                 $offset++;
                 $table .= "<td class='text-center'>
-                <button class='btn btn-primary rounded-circle' id='editBtn'  data-editid='{$row[$column_names_of_table[0]]}' data-key='".array_values($column_names_of_table)[0]."' data-tableName='{$table_name}'><i class='bi bi-pencil-fill'></i></button>
+                <button class='btn btn-primary rounded-circle' id='editBtn'  data-editid='{$row[$column_names_of_table[0]]}' data-key='" . array_values($column_names_of_table)[0] . "' data-tableName='{$table_name}'><i class='bi bi-pencil-fill'></i></button>
                 </td>
                 <td class='text-center'>
                 <button class='btn btn-danger rounded-circle' id='deleteBtn' data-deleteid='{$row[$column_names_of_table[0]]}' data-tableName='{$table_name}'><i class='bi bi-x-square-fill'></i></button>

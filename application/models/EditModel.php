@@ -9,12 +9,14 @@ class EditModel extends CI_Model{
         $id = $editData['id']; // id
         $key = $editData['key']; // key 
 
+
         $query = $this->db->where($key, $id)->get($table_name);
 
         $result =  $query->row();
 
         // removing password from data 
-        if ($result) {
+        
+        if (isset($editData['password'])) {
             if($result->password){
                 unset($result->password);
             }

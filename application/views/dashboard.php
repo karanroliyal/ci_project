@@ -188,6 +188,8 @@ include_once "templates/header.php" ?>
 
 </div>
 
-
+<script>
+    localStorage.setItem("tabName", "#dashoardTab");
+</script>
 
 <?php include_once "templates/footer.php" ?>

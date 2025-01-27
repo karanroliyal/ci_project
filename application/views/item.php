@@ -24,6 +24,8 @@ include_once "templates/header.php" ?>
 
 </div>
 
-
+<script>
+    localStorage.setItem("tabName", "#itemMasterTab");
+</script>
 
 <?php include_once "templates/footer.php" ?>

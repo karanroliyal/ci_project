@@ -33,22 +33,22 @@ include_once "templates/header.php" ?>
                         <!-- Live search form start -->
                         <form class="tableDataForm row align-items-center my-bg-b my-color" id="liveSearchForm">
 
-                            <div class="col-md-1 col-sm-6 col-xl-1">
+                            <div class="col-md-1 col-sm-6 col-xl-1 mt-2">
                                 <label for="" class="form-label">Id</label>
                                 <input type="number" name="id" class="form-control">
                             </div>
 
-                            <div class="col-md-3 col-sm-6 col-xl-3">
+                            <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
                                 <label for="" class="form-label">Name</label>
                                 <input type="text" name="name" class="form-control">
                             </div>
 
-                            <div class="col-md-3 col-sm-6 col-xl-3">
+                            <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
                                 <label for="" class="form-label">Phone</label>
                                 <input type="text" name="phone" class="form-control">
                             </div>
 
-                            <div class="col-md-3 col-sm-6 col-xl-3">
+                            <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
                                 <label for="" class="form-label">Email</label>
                                 <input type="text" name="email" class="form-control">
                             </div>
@@ -129,27 +129,27 @@ include_once "templates/header.php" ?>
                     <form class="row " id="tableData">
 
                         <div class="col-md-6 mb-3">
-                            <label for="nameId" class="form-label">Name</label>
+                            <label for="nameId" class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="nameId" name="name" maxlength="70">
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="phoneId" class="form-label">Phone</label>
+                            <label for="phoneId" class="form-label">Phone <span class="text-danger">*</span></label>
                             <input type="tel" class="form-control" id="phoneId" name="phone" maxlength="10">
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="emailId" class="form-label">Email</label>
+                            <label for="emailId" class="form-label">Email <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="emailId" name="email" maxlength="100">
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="passwordId" class="form-label">Password</label>
+                            <label for="passwordId" class="form-label">Password <span class="text-danger">*</span></label>
                             <input type="password" class="form-control" id="passwordId" name="password" maxlength="15">
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="imageId" class="form-label">Profile</label>
+                            <label for="imageId" class="form-label">Profile <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="imageId" name="image" accept=".jpg, .jpeg, .png, .gif">
                             <small class="text-danger error"></small>
                             <div>
@@ -188,6 +188,8 @@ include_once "templates/header.php" ?>
 
 </div>
 
-
+<script>
+    localStorage.setItem("tabName", "#userMasterTab");
+</script>
 
 <?php include_once "templates/footer.php" ?>

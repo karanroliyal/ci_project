@@ -24,6 +24,9 @@ include_once "templates/header.php" ?>
 
 </div>
 
+<script>
+    localStorage.setItem("tabName", "#invoiceTab");
+</script>
 
 
 <?php include_once "templates/footer.php" ?>
