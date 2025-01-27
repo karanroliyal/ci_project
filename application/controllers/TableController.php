@@ -12,13 +12,9 @@ class TableController extends CI_Controller{
 
         $livedata = $this->input->post();
 
-        // print_r($livedata);
-
         $this->load->model('tablemodel');
 
         $modelData = $this->tablemodel->createTable($livedata);
-
-        // print_r($modelData);
 
         echo $modelData;
 

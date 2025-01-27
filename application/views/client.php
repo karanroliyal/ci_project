@@ -57,7 +57,8 @@ include_once "templates/header.php" ?>
                             </div>
 
                             <input type="hidden" name="table_name" value="client_master">
-                            <input type="hidden" name="columnToShow" value="id,name,email,phone,address,state,district,pincode"> <!-- order also be same as table shown on frontend -->
+                            <input type="hidden" name="columnToShow" value="id,name,email,phone,CONCAT_WS(',' , address , state , district ),pincode"> <!-- order also be same as table shown on frontend -->
+                            <!-- <input type="hidden" name="columnToShow" value="id,name,email,phone,address,state,district,pincode">  -->
                             <input type="hidden" name="currentPage" id="pageId" value="1">
                             <input type="hidden" name="pageLimit" id="limit" value="5">
                             <input type="hidden" name="sortOn" id="sortOn" value="id">
