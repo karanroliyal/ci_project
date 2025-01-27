@@ -27,21 +27,20 @@ class TableModel extends CI_Model
         $current_page_opened = $liveFormData['currentPage']; // which page is open
         unset($liveFormData['currentPage']);
 
-        if( in_array('address', $column_names_of_table) && in_array('state', $column_names_of_table) && in_array('district', $column_names_of_table)  ){
+        if (in_array('address', $column_names_of_table) && in_array('state', $column_names_of_table) && in_array('district', $column_names_of_table)) {
             // unset($column_names_of_table[4]);
             // unset($column_names_of_table[5]);
             // unset($column_names_of_table[6]);
             // echo "hello";
 
-            array_splice($column_names_of_table , 4 , 3 );
+            array_splice($column_names_of_table, 4, 3);
             $column_names_of_table[4] = 'concat_ws("," , address , state , district)';
             $column_names_of_table[5] = 'pincode';
-
         }
 
 
 
-        
+
 
         // Offset of data
         $offset = ($current_page_opened - 1) * $limit;
@@ -67,7 +66,7 @@ class TableModel extends CI_Model
                 <button class='btn btn-primary rounded-circle' id='editBtn'  data-editid='{$row[$column_names_of_table[0]]}' data-key='" . array_values($column_names_of_table)[0] . "' data-tableName='{$table_name}'><i class='bi bi-pencil-fill'></i></button>
                 </td>
                 <td class='text-center'>
-                <button class='btn btn-danger rounded-circle' id='deleteBtn' data-deleteid='{$row[$column_names_of_table[0]]}' data-tableName='{$table_name}'><i class='bi bi-x-square-fill'></i></button>
+                <button class='btn btn-danger rounded-circle' id='deleteBtn' data-key='" . array_values($column_names_of_table)[0] . "' data-deleteid='{$row[$column_names_of_table[0]]}' data-tableName='{$table_name}'><i class='bi bi-x-square-fill'></i></button>
                 </td>
                 </tr>";
             }
@@ -81,5 +80,13 @@ class TableModel extends CI_Model
 
             return json_encode(['table' => "<td class='text-center' colspan='" . (count($column_names_of_table) + 3) . "'><h4>No record found</h4></td>", 'pagination' => ""]);
         }
+    }
+
+
+    function delete($deleteData)
+    {
+
+        $this->db->where($deleteData['key'], $deleteData['deleteid']);
+        $this->db->delete($deleteData['tableName']);
     }
 }
