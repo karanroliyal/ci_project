@@ -28,32 +28,61 @@ class TableModel extends CI_Model
         unset($liveFormData['currentPage']);
 
         if (in_array('address', $column_names_of_table) && in_array('state', $column_names_of_table) && in_array('district', $column_names_of_table)) {
-            // unset($column_names_of_table[4]);
-            // unset($column_names_of_table[5]);
-            // unset($column_names_of_table[6]);
-            // echo "hello";
-
             array_splice($column_names_of_table, 4, 3);
-            $column_names_of_table[4] = 'concat_ws("," , address , state , district)';
+            $column_names_of_table[4] = 'concat_ws("," , address , sm.state_name , dm.district_name)';
             $column_names_of_table[5] = 'pincode';
         }
 
+        $join_column=[];
+        $join_on=[];
+
+        // If there is join avalilable in query 
+
+        if (isset($liveFormData['join_columns'])) {
+
+            $get_join_columns = $liveFormData['join_columns'];
+            $get_join_on = $liveFormData['join_on'];
+
+            unset($liveFormData['join_columns']);
+            unset($liveFormData['join_on']);
+
+            $join_column = explode(",", $get_join_columns); // join column names
+            $join_on = explode(",", $get_join_on); // join column on
 
 
+        }
 
 
         // Offset of data
         $offset = ($current_page_opened - 1) * $limit;
 
+
+        $this->db->order_by($sort_on_column, $order_by);
+         $this->db->select($column_names_of_table)->from($table_name);
+
+         
+        $this->db->group_start();
         foreach ($liveFormData as $key => $value) {
             $this->db->like($key, $value);
         }
-        $this->db->order_by($sort_on_column, $order_by);
-        $result = $this->db->select($column_names_of_table)->get($table_name, $limit, $offset);
+        $this->db->group_end();
+
+        // if any join available
+        if (isset($join_column)) {
+
+            for ($i = 0; $i < count($join_column); $i++) {
+
+                $result = $this->db->join($join_column[$i], $join_on[$i]);
+
+            }
+            
+        }
+
+        $result = $this->db->get('' , $limit , $offset);
 
         $offset += 1;
 
-        if ($result->num_rows()) {
+        if ($result->num_rows() > 0 ) {
 
             $table = "";
             foreach ($result->result_array() as $row) {
@@ -72,13 +101,13 @@ class TableModel extends CI_Model
             }
 
             $this->load->helper('pagination');
-            $ulData = pageination_builder($liveFormData, $table_name, $current_page_opened, $limit);
+            $ulData = pageination_builder($liveFormData, $table_name, $current_page_opened, $limit , $join_column , $join_on);
 
 
-            return json_encode(['table' => $table, 'pagination' => $ulData]);
+            return json_encode(['table' => $table, 'pagination' => $ulData, 'query' => $this->db->last_query()]);
         } else {
 
-            return json_encode(['table' => "<td class='text-center' colspan='" . (count($column_names_of_table) + 3) . "'><h4>No record found</h4></td>", 'pagination' => ""]);
+            return json_encode(['table' => "<td class='text-center' colspan='" . (count($column_names_of_table) + 3) . "'><h4>No record found</h4></td>", 'pagination' => "" , 'query' => $this->db->last_query()]);
         }
     }
 

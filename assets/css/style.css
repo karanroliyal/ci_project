@@ -182,11 +182,15 @@ body {
             .dynamicPagination .my-pagination{
                 cursor: pointer;
             }
-            
+            .table thead{
+                white-space: nowrap;
+            }
             .table thead th{
                 cursor: pointer;
             }
-
+            .imageRemoveBtn{
+                margin: 10px;
+            }
             #tableData {
                 padding: 20px 20px 30px 20px;
                 box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;

@@ -62,6 +62,17 @@ class FormValidation {
 			$(this.id).next(".error").text(this.errorText);
 		}
 	}
+
+	onlyNumbers() {
+		if (/^[0-9]+$/.test(this.value)) {
+			console.log("good");
+		} else {
+			let value = $(this.id).val();
+			let new_value = value.slice(0, -1);
+			$(this.id).val(new_value);
+			console.log("Bad");
+		}
+	}
 }
 
 // fields for validation
@@ -88,6 +99,7 @@ const fileds_for_validation = [
 		id: "#phoneId",
 		errorText: "Invaid phone number",
 		regExp: /^[0-9]{10}$/,
+		onlyNumber: true,
 	},
 	{
 		id: "#imageId",
@@ -108,6 +120,7 @@ const fileds_for_validation = [
 		id: "#pincodeId",
 		errorText: "Only numbers are allowed and lenght must be 6 only",
 		regExp: /^[0-9]{6}$/,
+		onlyNumber: true,
 	},
 	{
 		id: "#addressId",
@@ -139,6 +152,9 @@ fileds_for_validation.map((ele) => {
 			);
 
 			validateObj.validation();
+			if (ele.onlyNumber) {
+				validateObj.onlyNumbers();
+			}
 		});
 	} else {
 		$(`input[name=${ele.name_}]`).on("input", function () {
@@ -165,7 +181,10 @@ $(document).on("input", "#tableData input, #tableData select", function () {
 		return; // This will skip the current loop for password and file type
 	}
 	if ($(this).val() == "" || null || undefined) {
-		$(this).parent(".mb-3").find(".error").text("Field is required");
+		$(this)
+			.parent(".mb-3")
+			.find(".error")
+			.text($(this).attr("name") + " field is required");
 		checkForm = 0;
 	}
 	if ($(this).is(":checkbox, :radio")) {
@@ -204,7 +223,10 @@ function sendData() {
 			) {
 				return;
 			}
-			$(this).parent(".mb-3").find(".error").text("Field is required");
+			$(this)
+				.parent(".mb-3")
+				.find(".error")
+				.text($(this).attr("name") + " field is required");
 			checkForm = 0;
 		}
 		if ($(this).is(":checkbox, :radio")) {
@@ -279,21 +301,41 @@ function sendData() {
 					}, 4000);
 				}
 				if (data.status == "success") {
-					$(".my-backend-success").removeClass("d-none");
-					$(".my-backend-success").text("Form Submitted successfully");
 					$("#tableData").trigger("reset");
 
 					let change = $("#nav-home-tab");
 					let tab = new bootstrap.Tab(change);
 					tab.show();
 
-					setTimeout(function () {
-						$(".my-backend-success").addClass("d-none");
-						$(".my-backend-success").text("");
-					}, 4000);
+					// setTimeout(function () {
+					// 	$(".my-backend-success").addClass("d-none");
+					// 	$(".my-backend-success").text("");
+					// }, 4000);
+
 					$("#tableData").trigger("reset");
 					document.getElementById("myUploadView").src = "";
 					getTable();
+					if ($(".add-user").hasClass("d-none") && !$(".update-user").hasClass("d-none")) {
+						let text = $("#nav-profile-tab").text();
+						let add_text = text.replace("Update", "Add");
+						$("#nav-profile-tab").text(add_text);
+						$("#userId").val("");
+						$(".imageRemoveBtn").remove();
+						$(".update-user").addClass("d-none");
+						$(".add-user").removeClass("d-none");
+						Swal.fire({
+							title: "Record updated successfully",
+							icon: "success",
+							draggable: false,
+						});
+					} else {
+						$(".imageRemoveBtn").remove();
+						Swal.fire({
+							title: "Record added successfully",
+							icon: "success",
+							draggable: false,
+						});
+					}
 				}
 			},
 		});
@@ -307,11 +349,16 @@ function sendData() {
 // View Uploaded image start ***********************************************
 
 $("#imageId").on("input", function () {
+	$(".imageRemoveBtn").remove();
 	if ($("#imageId").val() == "") {
 		document.getElementById("myUploadView").src = "";
+		$(".imageRemoveBtn").remove();
 	} else {
 		document.getElementById("myUploadView").src = window.URL.createObjectURL(
 			this.files[0]
+		);
+		$("#myUploadView").after(
+			" <button type='button' class='imageRemoveBtn btn btn-danger' onclick='removeImage()' ><i class='bi bi-x-square'></i></button>"
 		);
 	}
 });
@@ -326,6 +373,11 @@ $("#nav-home-tab").on("click", function () {
 	document.getElementById("myUploadView").src = "";
 	$(".update-user").addClass("d-none");
 	$(".add-user").removeClass("d-none");
+	let text = $("#nav-profile-tab").text();
+	let add_text = text.replace("Update", "Add");
+	$("#userId").val("");
+	$("#nav-profile-tab").text(add_text);
+	$(".imageRemoveBtn").remove();
 });
 
 // Table creation Dynamically and Live Search AJAX call start **********************************************************
@@ -475,19 +527,24 @@ $(document).on("click", "#editBtn", function () {
 			// Mapping fileds from name
 			Object.keys(data).forEach(function (key) {
 				const inputField = $(`#tableData input[name='${key}']`);
-				if (inputField.attr("type") !== "file" && inputField.attr("type") !== "password") {
-
-					$(`#tableData  input[name='${key}'] , #tableData select[name='${key}']`).val(data[key]);
+				if (
+					inputField.attr("type") !== "file" &&
+					inputField.attr("type") !== "password"
+				) {
+					$(
+						`#tableData  input[name='${key}'] , #tableData select[name='${key}']`
+					).val(data[key]);
 
 					if (key == "state") {
 						stateChange();
 						setTimeout(function () {
-							$(`#tableData select[name='district']`).val(data['district']);
-							console.log($(`#tableData select[name='district']`).val())
+							$(`#tableData select[name='district']`).val(data["district"]);
+							console.log($(`#tableData select[name='district']`).val());
 						}, 100);
 					}
-					$(`#tableData  input[name='${key}'] , #tableData select[name='${key}']`).val(data[key]);
-
+					$(
+						`#tableData  input[name='${key}'] , #tableData select[name='${key}']`
+					).val(data[key]);
 				}
 			});
 
@@ -499,10 +556,17 @@ $(document).on("click", "#editBtn", function () {
 					"src",
 					baseUrls + imagePath.slice(2) + "/" + imageName
 				);
+				$("#myUploadView").after(
+					"<button type='button' class='imageRemoveBtn btn btn-danger' onclick='removeImage()' ><i class='bi bi-x-square'></i></button>"
+				);
 			}
 			// changing button from Add data to Update data
 			$("#tableData .add-user").addClass("d-none");
 			$("#tableData .update-user").removeClass("d-none");
+			let text = $("#nav-profile-tab").text();
+			let Update_text = text.replace("Add", "Update");
+			$("#nav-profile-tab").text(Update_text);
+			console.log(text);
 		},
 	});
 });
@@ -529,62 +593,79 @@ function stateChange() {
 
 // District data on change of state end ***********************************************************
 
-
 // Deleteing data from Databse start *******************
 
-$(document).on('click' , '#deleteBtn' , function() {
-
+$(document).on("click", "#deleteBtn", function () {
 	let deleteid = $(this).data("deleteid");
 	let key = $(this).data("key");
 	let tableName = $(this).data("tablename");
 
-const swalWithBootstrapButtons = Swal.mixin({
-	customClass: {
-	  confirmButton: "btn btn-success",
-	  cancelButton: "btn btn-danger"
-	},
-	buttonsStyling: false
-  });
-  swalWithBootstrapButtons.fire({
-	title: "Are you sure?",
-	text: "You won't be able to revert this!",
-	icon: "warning",
-	showCancelButton: true,
-	confirmButtonText: "Yes, delete it!",
-	cancelButtonText: "No, cancel!",
-	reverseButtons: true
-  }).then((result) => {
-	if (result.isConfirmed) {
-	  swalWithBootstrapButtons.fire({
-		title: "Deleted!",
-		text: "Your file has been deleted.",
-		icon: "success"
-	  });
-	} else if (
-	  /* Read more about handling dismissals below */
-	  result.dismiss === Swal.DismissReason.cancel
-	) {
-	  swalWithBootstrapButtons.fire({
-		title: "Cancelled",
-		text: "Your imaginary file is safe :)",
-		icon: "error"
-	  });
-	}
-  });
-
-// 	$.ajax({
-// 		url: baseUrls+"tablecontroller/delete",
-// 		type: "POST",
-// 		data: {deleteid : deleteid , tableName : tableName , key : key},
-// 		success: function(data){
-// 			console.log(data);
-// 			getTable();
-// 		}
-// 	})
-
-})
-
-
-
+	const swalWithBootstrapButtons = Swal.mixin({
+		customClass: {
+			confirmButton: "btn btn-success",
+			cancelButton: "btn btn-danger",
+		},
+		buttonsStyling: false,
+	});
+	swalWithBootstrapButtons
+		.fire({
+			title: "Are you sure?",
+			text: "You won't be able to revert this!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Yes, delete it!",
+			cancelButtonText: "No, cancel!",
+			reverseButtons: true,
+		})
+		.then((result) => {
+			if (result.isConfirmed) {
+				swalWithBootstrapButtons.fire({
+					title: "Deleted!",
+					text: "Your file has been deleted.",
+					icon: "success",
+				});
+				$.ajax({
+					url: baseUrls + "tablecontroller/delete",
+					type: "POST",
+					data: { deleteid: deleteid, tableName: tableName, key: key },
+					success: function (data) {
+						console.log(data);
+						getTable();
+					},
+				});
+			} else if (result.dismiss === Swal.DismissReason.cancel) {
+				swalWithBootstrapButtons.fire({
+					title: "Cancelled",
+					text: "Your imaginary file is safe :)",
+					icon: "error",
+				});
+			}
+		});
+});
 
 // Deleteing data from Databse end *******************
+
+// reset main form data start ***********************************************************
+
+function resetMainFormData() {
+	setTimeout(function () {
+		document.getElementById("myUploadView").src = "";
+		$(".imageRemoveBtn").remove();
+	}, 100);
+}
+// reset main form data end ***********************************************************
+
+// remove image function start ***********
+
+function removeImage(){
+
+	console.log("remove");
+	$("#myUploadView").attr('src' , '');
+	$(".imageRemoveBtn").remove();
+	$(".imageRemoveBtn").remove();
+	$("#imageId").val('');
+
+}
+
+// remove image function end ***********
+

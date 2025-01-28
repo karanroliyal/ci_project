@@ -34,39 +34,39 @@ include_once "templates/header.php" ?>
                         <form class="tableDataForm row align-items-center my-bg-b my-color" id="liveSearchForm">
 
                             <div class="col-md-1 col-sm-6 col-xl-1 mt-2">
-                                <label for="" class="form-label">Id</label>
-                                <input type="number" name="id" class="form-control">
+                                <label for="searchId" class="form-label">Id</label>
+                                <input type="number" id="searchId" name="id" class="form-control">
                             </div>
 
                             <div class="col-md-2 col-sm-6 col-xl-2 mt-2">
-                                <label for="" class="form-label">Name</label>
-                                <input type="text" name="name" class="form-control">
+                                <label for="searchName" class="form-label">Name</label>
+                                <input type="text" name="name" id="searchName" class="form-control">
                             </div>
 
                             <div class="col-md-2 col-sm-6 col-xl-2 mt-2">
-                                <label for="" class="form-label">Phone</label>
-                                <input type="text" name="phone" class="form-control">
+                                <label for="searchPhone" class="form-label">Phone</label>
+                                <input type="text" name="phone" id="searchPhone" class="form-control">
                             </div>
 
                             <div class="col-md-2 col-sm-6 col-xl-2 mt-2">
-                                <label for="" class="form-label">Email</label>
-                                <input type="text" name="email" class="form-control">
+                                <label for="searchEmail" class="form-label">Email</label>
+                                <input type="text" name="email" id="searchEmail" class="form-control">
                             </div>
                             <div class="col-md-2 col-sm-6 col-xl-2 mt-2">
-                                <label for="" class="form-label">Pincode</label>
-                                <input type="text" name="pincode" class="form-control">
+                                <label for="searchPincode" class="form-label">Pincode</label>
+                                <input type="number" name="pincode" id="searchPincode" class="form-control">
                             </div>
                             <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
-                                <label for="" class="form-label">Address</label>
-                                <input type="text" name="address" class="form-control">
+                                <label for="searchAddress" class="form-label">Address</label>
+                                <input type="text" name="address" id="searchAddress" class="form-control">
                             </div>
                             <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
-                                <label for="" class="form-label">State</label>
-                                <input type="text" name="state" class="form-control">
+                                <label for="searchState" class="form-label">State</label>
+                                <input type="text" name="state_name" id="searchState" class="form-control">
                             </div>
                             <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
-                                <label for="" class="form-label">District</label>
-                                <input type="text" name="district" class="form-control">
+                                <label for="searchDistrict" class="form-label">District</label>
+                                <input type="text" name="district_name" id="searchDistrict" class="form-control">
                             </div>
 
 
@@ -75,7 +75,10 @@ include_once "templates/header.php" ?>
                             </div>
 
                             <input type="hidden" name="table_name" value="client_master">
-                            <input type="hidden" name="columnToShow" value="id,name,email,phone,address,state,district,pincode"> <!-- order also be same as table shown on frontend -->
+                            <input type="hidden" name="columnToShow" value="id,name,email,phone,address,state,district,pincode"> 
+                             <!-- order also be same as table shown on frontend  -->
+                            <input type="hidden" name="join_columns" value="state_master sm , district_master dm">
+                            <input type="hidden" name="join_on" value="client_master.state = sm.state_id, client_master.district = dm.district_id">
                             <input type="hidden" name="currentPage" id="pageId" value="1">
                             <input type="hidden" name="pageLimit" id="limit" value="5">
                             <input type="hidden" name="sortOn" id="sortOn" value="id">
@@ -195,7 +198,7 @@ include_once "templates/header.php" ?>
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="pincodeId" class="form-label">Pincode <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control text-end" id="pincodeId" name="pincode" maxlength="6">
+                            <input type="text" class="form-control text-end" id="pincodeId" name="pincode" maxlength="6">
                             <small class="text-danger error"></small>
                         </div>
 
@@ -204,8 +207,9 @@ include_once "templates/header.php" ?>
                         <img src="" id="myUploadView" class="d-none" >
 
                         <div class="col-md-12 mt-4">
-                            <button type="button" class="add-user btn btn-dark" onclick="sendData()">Add client</button>
-                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()">Update client</button>
+                            <button type="button" class="add-user btn btn-dark" onclick="sendData()"><i class="bi bi-person-add"></i> Add client</button>
+                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()"><i class="bi bi-arrow-bar-up"></i> Update client</button>
+                            <button type="reset" class="btn btn-danger" onclick="resetMainFormData()" ><i class="bi bi-arrow-counterclockwise"></i> reset</button>
                         </div>
 
                         <!-- Backend Alerts  -->

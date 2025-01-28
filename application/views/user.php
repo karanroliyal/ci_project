@@ -1,4 +1,4 @@
-<?php $title = "Dashboard";
+<?php $title = "User";
 include_once "templates/header.php" ?>
 
 <div class="project-layout-main-wrapper">
@@ -34,23 +34,23 @@ include_once "templates/header.php" ?>
                         <form class="tableDataForm row align-items-center my-bg-b my-color" id="liveSearchForm">
 
                             <div class="col-md-1 col-sm-6 col-xl-1 mt-2">
-                                <label for="" class="form-label">Id</label>
-                                <input type="number" name="id" class="form-control">
+                                <label for="searchId" class="form-label">Id</label>
+                                <input type="number" name="id" id="searchId" class="form-control">
                             </div>
 
                             <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
-                                <label for="" class="form-label">Name</label>
-                                <input type="text" name="name" class="form-control">
+                                <label for="searchName" class="form-label">Name</label>
+                                <input type="text" name="name" id="searchName" class="form-control">
                             </div>
 
                             <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
-                                <label for="" class="form-label">Phone</label>
-                                <input type="text" name="phone" class="form-control">
+                                <label for="searchPhone" class="form-label">Phone</label>
+                                <input type="text" name="phone" id="searchPhone" class="form-control">
                             </div>
 
                             <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
-                                <label for="" class="form-label">Email</label>
-                                <input type="text" name="email" class="form-control">
+                                <label for="searchEmail" class="form-label">Email</label>
+                                <input type="text" name="email" id="searchEmail" class="form-control">
                             </div>
                             <div class="col-md-2 col-sm-6 col-xl-2 mt-4 d-flex justify-content-center">
                                 <button onclick="resetLoadTable()" type="reset" class="btn btn-danger">reset</button>
@@ -161,9 +161,10 @@ include_once "templates/header.php" ?>
                         <input type="hidden" name="table" value="user_master">
                         <input type="hidden" id="imagePath" name="upload-path-of-image" value="./profiles">
 
-                        <div class="col-md-2 mt-4">
-                            <button type="button" class="add-user btn btn-dark" onclick="sendData()">Add user</button>
-                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()">Update user</button>
+                        <div class="col-md-12 mt-4">
+                            <button type="button" class="add-user btn btn-dark" onclick="sendData()"><i class="bi bi-person-add"></i>  Add user</button>
+                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()"><i class="bi bi-arrow-bar-up"></i> Update user</button>
+                            <button type="reset" class="btn btn-danger" onclick="resetMainFormData()" ><i class="bi bi-arrow-counterclockwise"></i> reset</button>
                         </div>
 
                         <!-- Backend Alerts  -->
