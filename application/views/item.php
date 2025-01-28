@@ -33,26 +33,13 @@ include_once "templates/header.php" ?>
                         <!-- Live search form start -->
                         <form class="tableDataForm row align-items-center my-bg-b my-color" id="liveSearchForm">
 
-                            <div class="col-md-1 col-sm-6 col-xl-1 mt-2">
-                                <label for="searchId" class="form-label">Id</label>
-                                <input type="number" name="id" id="searchId" class="form-control">
-                            </div>
 
                             <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
-                                <label for="searchName" class="form-label">Name</label>
+                                <label for="searchName" class="form-label">Item name</label>
                                 <input type="text" name="item_name" id="searchName" class="form-control">
                             </div>
 
-                            <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
-                                <label for="searchPhone" class="form-label">Phone</label>
-                                <input type="text" name="phone" id="searchPhone" class="form-control">
-                            </div>
-
-                            <div class="col-md-3 col-sm-6 col-xl-3 mt-2">
-                                <label for="searchEmail" class="form-label">Email</label>
-                                <input type="text" name="email" id="searchEmail" class="form-control">
-                            </div>
-                            <div class="col-md-2 col-sm-6 col-xl-2 mt-4 d-flex justify-content-center">
+                            <div class="col-md-2 col-sm-6 col-xl-2 mt-5 d-flex justify-content-center">
                                 <button onclick="resetLoadTable()" type="reset" class="btn btn-danger">reset</button>
                             </div>
 
@@ -101,9 +88,10 @@ include_once "templates/header.php" ?>
                                 <thead>
                                     <th>Sno.</th>
                                     <th class="sortingClass" data-sort="id">Id <i class="bi bi-arrow-down-up"></i></th>
-                                    <th class="sortingClass" data-sort="name">Name <i class="bi bi-arrow-down-up"></i></th>
-                                    <th class="sortingClass" data-sort="email">Email <i class="bi bi-arrow-down-up"></i></th>
-                                    <th class="sortingClass" data-sort="phone">Phone <i class="bi bi-arrow-down-up"></i></th>
+                                    <th class="sortingClass" data-sort="item_name">Item name <i class="bi bi-arrow-down-up"></i></th>
+                                    <th class="sortingClass" data-sort="item_description">Item description <i class="bi bi-arrow-down-up"></i></th>
+                                    <th class="sortingClass" data-sort="item_price">Price <i class="bi bi-arrow-down-up"></i></th>
+                                    <th class="sortingClass" data-sort="image">Image <i class="bi bi-arrow-down-up"></i></th>
                                     <th colspan="2" class="text-center">Action</th>
                                 </thead>
 
@@ -129,27 +117,22 @@ include_once "templates/header.php" ?>
                     <form class="row " id="tableData">
 
                         <div class="col-md-6 mb-3">
-                            <label for="nameId" class="form-label">Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nameId" name="name" maxlength="70">
+                            <label for="nameId" class="form-label">Item name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nameId" name="item_name" maxlength="70">
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="phoneId" class="form-label">Phone <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" id="phoneId" name="phone" maxlength="10">
+                            <label for="descriptionId" class="form-label">Item description <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="descriptionId" name="item_description" maxlength="150">
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="emailId" class="form-label">Email <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="emailId" name="email" maxlength="100">
-                            <small class="text-danger error"></small>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="passwordId" class="form-label">Password <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="passwordId" name="password" maxlength="15">
+                            <label for="priceId" class="form-label">Item price <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control text-end" id="priceId" name="item_price" maxlength="10">
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="imageId" class="form-label">Profile <span class="text-danger">*</span></label>
+                            <label for="imageId" class="form-label">Item image <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="imageId" name="image" accept=".jpg, .jpeg, .png, .gif">
                             <small class="text-danger error"></small>
                             <div>
@@ -158,12 +141,12 @@ include_once "templates/header.php" ?>
                         </div>
 
                         <input type="hidden" id="userId" name="id">
-                        <input type="hidden" name="table" value="user_master">
-                        <input type="hidden" id="imagePath" name="upload-path-of-image" value="./profiles">
+                        <input type="hidden" name="table" value="item_master">
+                        <input type="hidden" id="imagePath" name="upload-path-of-image" value="./items">
 
                         <div class="col-md-12 mt-4">
-                            <button type="button" class="add-user btn btn-dark" onclick="sendData()"><i class="bi bi-person-add"></i>  Add user</button>
-                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()"><i class="bi bi-arrow-bar-up"></i> Update user</button>
+                            <button type="button" class="add-user btn btn-dark" onclick="sendData()"><i class="bi bi-person-add"></i>  Add item</button>
+                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()"><i class="bi bi-arrow-bar-up"></i> Update item</button>
                             <button type="reset" class="btn btn-danger" onclick="resetMainFormData()" ><i class="bi bi-arrow-counterclockwise"></i> reset</button>
                         </div>
 

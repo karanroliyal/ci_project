@@ -96,13 +96,14 @@ class InsertController extends CI_Controller
         });
 
         // validation for image
-        // if (!$this->input->post('action') == "update"){
-        //     if (empty($_FILES['image']['name'])) {
-        //         $this->form_validation->set_rules("image", "Image", 'required');
-        //         array_push($keys, 'image');
-        //         array_push($values, form_error('image'));
-        //     }
-        // }
+        if (!isset($_FILES)){
+            if (empty($_FILES['image']['name'])) {
+                $this->form_validation->set_rules("image", "Image", 'required');
+                array_push($keys, 'image');
+                array_push($values, form_error('image'));
+            }
+        }
+
         // setting rules for form here 
         $this->form_validation->set_rules($fields_to_validate);
 
