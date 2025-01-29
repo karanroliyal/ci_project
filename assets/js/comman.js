@@ -912,9 +912,7 @@ function getitems(e) {
             $(this).parents('.duplicate-row').find(".itemPriceAddId").val(ui.item.price);
             $(this).parents('.duplicate-row').find(".item_id").val(ui.item.id);
             $(this).parents('.duplicate-row').find(".quantityAddId").val(1);
-			setTimeout(function(){
-				$(this).parents('.duplicate-row').find(".quantityAddId").trigger("input");
-			},100);
+			$(this).parents('.duplicate-row').find(".quantityAddId").trigger("input");
         }
     });
 
@@ -956,8 +954,10 @@ $(document).on('input', ".quantityAddId", function () {
 $(document).on('input' , '.quantityAddId' , function(){
 
 	if($(this).parents('.duplicate-row').find('.itemPriceAddId').val() > 0 ){
-
-		$(this).val() < 0;
+		if($(this).val() <= 0 ){
+			$(this).val(1);
+			$(this).parents('.duplicate-row').find(".quantityAddId").trigger("input");
+		}
 
 	}
 
