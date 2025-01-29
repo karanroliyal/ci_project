@@ -17,8 +17,19 @@ class InsertController extends CI_Controller
 
         $this->load->helper('uniqueness');
 
-        $is_unique_email = uniqueHelper('email', $table_name , $this->input->post('email') , 'id' , $this->input->post('id') );
-        $is_unique_phone = uniqueHelper('phone', $table_name , $this->input->post('phone') , 'id' , $this->input->post('id') );
+        $is_unique_email="";
+        $is_unique_phone="";
+        $is_unique_item="";
+
+        if(isset($_POST['email']) && isset($_POST['phone'])){
+            
+                    $is_unique_email = uniqueHelper('email', $table_name , $this->input->post('email') , 'id' , $this->input->post('id') );
+                    $is_unique_phone = uniqueHelper('phone', $table_name , $this->input->post('phone') , 'id' , $this->input->post('id') );
+
+        }
+        if(isset($_POST['item_name'])){
+            $is_unique_item = uniqueHelper('item_name', $table_name , $this->input->post('item_name') , 'id' , $this->input->post('id') );
+        }
 
         if(!empty(trim($this->input->post('password')))){
             $required_password = "|required|trim";
@@ -84,7 +95,26 @@ class InsertController extends CI_Controller
                 'field' => 'languages[]',
                 'label' => 'Languages',
                 'rules' => 'required|trim'
-            ]
+            ],
+            [
+                'field' => 'item_name',
+                'label' => 'Item name',
+                'rules' => 'required|trim|min_length[2]|regex_match[/^[a-zA-Z- ]+$/]'.$is_unique_item,
+                "errors" => [
+                    'is_unique' => 'Item is already exist.',
+                ],
+            ],
+            [
+                'field' => 'item_description',
+                'label' => 'Item description',
+                'rules' => 'required|trim|min_length[2]'
+            ],
+            [
+                'field' => 'item_price',
+                'label' => 'Item price',
+                'rules' => 'required|trim|numeric'
+            ],
+
         ];
 
         $keys = [];
@@ -128,7 +158,6 @@ class InsertController extends CI_Controller
                     $error = $this->upload->display_errors();
                     echo json_encode(['imageError' => $error, 'fields' => 'image']);
                 }
-                echo "here i am ";
             } else {
 
                 // getting form data

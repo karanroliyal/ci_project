@@ -24,6 +24,12 @@ class TableModel extends CI_Model
         $order_by = $liveFormData['sortOrder']; // ASC or DESC
         unset($liveFormData['sortOrder']);
 
+        $image_path_get = "";
+        if(isset($liveFormData['imagePath'])){
+            $image_path_get = $liveFormData['imagePath'];
+            unset($liveFormData['imagePath']);
+        }
+
         $current_page_opened = $liveFormData['currentPage']; // which page is open
         unset($liveFormData['currentPage']);
 
@@ -88,9 +94,29 @@ class TableModel extends CI_Model
             foreach ($result->result_array() as $row) {
                 $table .= "<tr><td>$offset</td>";
                 for ($i = 0; $i < count($column_names_of_table); $i++) {
-                    $table .= "<td>" . ucwords($row[$column_names_of_table[$i]]) . "</td>";
+
+                    if($column_names_of_table[$i] == 'image'){
+
+                        $table .= "<td> <img class='table-image' src='" . base_url().$image_path_get."/".$row[$column_names_of_table[$i]] . "'></td>";
+
+                    }
+                    elseif($column_names_of_table[$i] == 'item_price'){
+                        $table .= "<td> ₹" .  ucwords($row[$column_names_of_table[$i]]) . "</td>";
+                    }
+                    else{
+                        $table .= "<td>" . ucwords($row[$column_names_of_table[$i]]) . "</td>";
+                    }
+
                 }
                 $offset++;
+
+                // for pdf and mail columns
+                if($table_name=='invoice_master'){
+                    $table .=  "<td><a><i class='bi bi-file-earmark-pdf-fill text-danger' data-pdfId='{$row[$column_names_of_table[0]]}'></i></a></td>
+                    
+                                <td><i class='bi bi-envelope-plus-fill text-success' data-mailId='{$row[$column_names_of_table[0]]}'></i></td>";
+                }
+
                 $table .= "<td class='text-center'>
                 <button class='btn btn-primary rounded-circle' id='editBtn'  data-editid='{$row[$column_names_of_table[0]]}' data-key='" . array_values($column_names_of_table)[0] . "' data-tableName='{$table_name}'><i class='bi bi-pencil-fill'></i></button>
                 </td>

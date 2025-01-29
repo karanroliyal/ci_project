@@ -29,6 +29,7 @@ class InsertModel extends CI_Model
                 $val = implode(", ", $value);
                 $formData[$key] = $val;
             }
+            
         }
 
 

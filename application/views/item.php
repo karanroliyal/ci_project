@@ -49,6 +49,7 @@ include_once "templates/header.php" ?>
                             <input type="hidden" name="pageLimit" id="limit" value="5">
                             <input type="hidden" name="sortOn" id="sortOn" value="id">
                             <input type="hidden" name="sortOrder" id="sortOrder" value="DESC">
+                            <input type="hidden" name="imagePath" id="imagePathId" value="items" >
 
 
                         </form>
@@ -91,7 +92,7 @@ include_once "templates/header.php" ?>
                                     <th class="sortingClass" data-sort="item_name">Item name <i class="bi bi-arrow-down-up"></i></th>
                                     <th class="sortingClass" data-sort="item_description">Item description <i class="bi bi-arrow-down-up"></i></th>
                                     <th class="sortingClass" data-sort="item_price">Price <i class="bi bi-arrow-down-up"></i></th>
-                                    <th class="sortingClass" data-sort="image">Image <i class="bi bi-arrow-down-up"></i></th>
+                                    <th>Image </th>
                                     <th colspan="2" class="text-center">Action</th>
                                 </thead>
 
@@ -117,8 +118,8 @@ include_once "templates/header.php" ?>
                     <form class="row " id="tableData">
 
                         <div class="col-md-6 mb-3">
-                            <label for="nameId" class="form-label">Item name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nameId" name="item_name" maxlength="70">
+                            <label for="itemNameId" class="form-label">Item name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="itemNameId" name="item_name" maxlength="50">
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -127,7 +128,7 @@ include_once "templates/header.php" ?>
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="priceId" class="form-label">Item price <span class="text-danger">*</span></label>
+                            <label for="priceId" class="form-label">Item price (₹)<span class="text-danger">*</span></label>
                             <input type="text" class="form-control text-end" id="priceId" name="item_price" maxlength="10">
                             <small class="text-danger error"></small>
                         </div>
@@ -145,8 +146,8 @@ include_once "templates/header.php" ?>
                         <input type="hidden" id="imagePath" name="upload-path-of-image" value="./items">
 
                         <div class="col-md-12 mt-4">
-                            <button type="button" class="add-user btn btn-dark" onclick="sendData()"><i class="bi bi-person-add"></i>  Add item</button>
-                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()"><i class="bi bi-arrow-bar-up"></i> Update item</button>
+                            <button type="button" class="add-user btn btn-dark" onclick="sendData()"><i class="bi bi-bag-plus-fill"></i> Add item</button>
+                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()"><i class="bi bi-bag-plus-fill"></i> Update item</button>
                             <button type="reset" class="btn btn-danger" onclick="resetMainFormData()" ><i class="bi bi-arrow-counterclockwise"></i> reset</button>
                         </div>
 

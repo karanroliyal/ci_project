@@ -130,7 +130,7 @@ include_once "templates/header.php" ?>
 
                         <div class="col-md-6 mb-3">
                             <label for="nameId" class="form-label">Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nameId" name="name" maxlength="70">
+                            <input type="text" class="form-control" id="nameId" name="name" maxlength="50">
                             <small class="text-danger error"></small>
                         </div>
                         <div class="col-md-6 mb-3">

@@ -14,6 +14,10 @@ if(!isset($_SESSION['email'])){
 <link rel="stylesheet" href="<?php echo base_url()."assets/css/bootstrap-icons.min.css" ?>">
 <script src="<?php echo base_url()."assets/js/jquery.js" ?>"></script>
 <script src="<?php echo base_url()."assets/js/sweet.alert.js" ?>"></script>
+<!-- Auto complete cdn  -->
+ <link rel="stylesheet" href="<?php echo base_url()."assets/css/autoComplete.css" ?>">
+ <script src="<?php echo base_url()."assets/js/autoComplete.js" ?>"></script>
+<!-- Auto complete cdn  -->
 </head>
 <body>
 

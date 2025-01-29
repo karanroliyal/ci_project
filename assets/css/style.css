@@ -173,23 +173,35 @@ body {
                 padding: 20px 20px 30px 20px;
                 box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
                 border-radius: 10px;
+                label{
+                    white-space: nowrap;
+                }
             }
 
             .tab-padding {
                 padding: 10px;
             }
-
+            .table-container{
+                overflow-x: auto;
+            }
             .dynamicPagination .my-pagination{
                 cursor: pointer;
             }
             .table thead{
                 white-space: nowrap;
+                user-select: none;
+            }
+            .dynamicPagination{
+                user-select: none;
             }
             .table thead th{
                 cursor: pointer;
             }
             .imageRemoveBtn{
                 margin: 10px;
+            }
+            .table-image{
+                width: 30px;
             }
             #tableData {
                 padding: 20px 20px 30px 20px;

@@ -1,4 +1,4 @@
-<?php $title = "Dashboard";
+<?php $title = "Client";
 include_once "templates/header.php" ?>
 
 <div class="project-layout-main-wrapper">
@@ -125,7 +125,7 @@ include_once "templates/header.php" ?>
                                     <th class="sortingClass" data-sort="name">Name <i class="bi bi-arrow-down-up"></i></th>
                                     <th class="sortingClass" data-sort="email">Email <i class="bi bi-arrow-down-up"></i></th>
                                     <th class="sortingClass" data-sort="phone">Phone <i class="bi bi-arrow-down-up"></i></th>
-                                    <th class="text-center"  data-sort="address">Address</th>
+                                    <th data-sort="address">Address</th>
                                     <!-- <th class="sortingClass" data-sort="state">State <i class="bi bi-arrow-down-up"></i></th>
                                     <th class="sortingClass" data-sort="district">District <i class="bi bi-arrow-down-up"></i></th> -->
                                     <th class="sortingClass" data-sort="pincode">Pincode <i class="bi bi-arrow-down-up"></i></th>
