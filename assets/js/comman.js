@@ -1160,6 +1160,7 @@ function generateInvoiceNo(){
 	})
 
 }
+
 if(localStorage.getItem("tabName") == "#invoiceTab"){
 	generateInvoiceNo();
 }
