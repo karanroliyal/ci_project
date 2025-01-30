@@ -112,9 +112,9 @@ class TableModel extends CI_Model
 
                 // for pdf and mail columns
                 if($table_name=='invoice_master'){
-                    $table .=  "<td><a><i class='bi bi-file-earmark-pdf-fill text-danger' data-pdfId='{$row[$column_names_of_table[0]]}'></i></a></td>
+                    $table .=  "<td class='text-center' ><a><i class='bi bi-file-earmark-pdf-fill text-danger' data-pdfId='{$row[$column_names_of_table[0]]}'></i></a></td>
                     
-                                <td><i class='bi bi-envelope-plus-fill text-success' data-mailId='{$row[$column_names_of_table[0]]}'></i></td>";
+                                <td class='text-center' ><i class='bi bi-envelope-plus-fill text-success' data-mailId='{$row[$column_names_of_table[0]]}'></i></td>";
                 }
 
                 $table .= "<td class='text-center'>
@@ -141,7 +141,27 @@ class TableModel extends CI_Model
     function delete($deleteData)
     {
 
-        $this->db->where($deleteData['key'], $deleteData['deleteid']);
-        $this->db->delete($deleteData['tableName']);
+        if($deleteData['tableName'] !== 'invoice_master'){
+
+            $this->db->where($deleteData['key'], $deleteData['deleteid']);
+            $this->db->delete($deleteData['tableName']);
+
+        }
+        else{
+
+            $this->db->where('invoice_id', $deleteData['deleteid']);
+
+            if($this->db->delete('invoice')){
+
+                $this->db->where('invoice_id', $deleteData['deleteid']);
+                $this->db->delete('invoice_master');
+
+            
+
+            }
+
+        }
+
+        
     }
 }

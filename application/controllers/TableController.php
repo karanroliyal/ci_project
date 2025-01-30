@@ -23,11 +23,10 @@ class TableController extends CI_Controller{
     public function delete(){
 
         $deleteData = $this->input->post();
-        // print_r($deleteData);
 
         $this->load->model('tablemodel');
 
-        $this->tablemodel->delete($deleteData);
+        echo $this->tablemodel->delete($deleteData);
 
     }
 

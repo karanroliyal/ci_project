@@ -3,8 +3,6 @@ $(document).ready(function () {
 
 	// Loading table on load
 	getTable();
-
-
 });
 
 let baseUrls = $("#baseUrl").val();
@@ -96,6 +94,36 @@ const fileds_for_validation = [
 		regExp: /^[a-zA-Z ]{3,50}$/,
 	},
 	{
+		id: "#invoiceId",
+		errorText: "live search field",
+		regExp: /^[0-9 ]{0,10}$/,
+		onlyNumber: true,
+	},
+	{
+		id: "#searchClientPhone",
+		errorText: "live search field",
+		regExp: /^[0-9 ]{0,10}$/,
+		onlyNumber: true,
+	},
+	{
+		id: "#clientPhoneId",
+		errorText: "Only numbers allowed",
+		regExp: /^[0-9]{0,10}$/,
+		onlyNumber: true,
+	},
+	{
+		id: ".amountAddId",
+		errorText: "Only numbers allowed",
+		regExp: /^[0-9.]+$/,
+		decimalNumber: true,
+	},
+	{
+		id: "#totalAmount",
+		errorText: "Only numbers allowed",
+		regExp: /^[0-9.]+$/,
+		decimalNumber: true,
+	},
+	{
 		id: "#itemNameId",
 		errorText: "only characters are allowed and 2 min character",
 		regExp: /^[a-zA-Z- ]{2,50}$/,
@@ -108,7 +136,7 @@ const fileds_for_validation = [
 	{
 		id: ".itemPriceAddId",
 		errorText: "only numbers are allowed",
-		regExp: /^[a-zA-Z ]+$/,
+		regExp: /^[0-9]+$/,
 		decimalNumber: true,
 	},
 	{
@@ -123,8 +151,8 @@ const fileds_for_validation = [
 	},
 	{
 		id: "#invoice_numberId",
-		errorText: "Only numbers and charters are allowed",
-		regExp: /^[a-zA-Z0-9]+$/,
+		errorText: "Only numbers and charters are allowed and max length is 10 and min length is 3",
+		regExp: /^[a-zA-Z0-9]{3,10}$/,
 	},
 	{
 		id: "#descriptionId",
@@ -255,10 +283,13 @@ $(document).on("input", "#tableData input, #tableData select", function () {
 	}
 	if ($(this).val() == "" || null || undefined) {
 		let filedname = $(this).attr("name");
-			filedname = filedname.replace(/_/g, " ");
-			filedname = filedname.replace(/[[]]/g, " ");
+		filedname = filedname.replace(/_/g, " ");
+		filedname = filedname.replace(/[[]]/g, " ");
 
-			$(this).parent(".mb-3").find(".error").text( capitalizeFirstLetter(filedname) + " field is required");
+		$(this)
+			.parent(".mb-3")
+			.find(".error")
+			.text(capitalizeFirstLetter(filedname) + " field is required");
 		checkForm = 0;
 	}
 	if ($(this).is(":checkbox, :radio")) {
@@ -270,7 +301,10 @@ $(document).on("input", "#tableData input, #tableData select", function () {
 			filedname = filedname.replace(/_/g, " ");
 			filedname = filedname.replace(/[[]]/g, " ");
 
-			$(this).parent(".mb-3").find(".error").text( capitalizeFirstLetter(filedname) + " field is required");
+			$(this)
+				.parent(".mb-3")
+				.find(".error")
+				.text(capitalizeFirstLetter(filedname) + " field is required");
 			checkForm = 0;
 		} else {
 			$(this).closest(".form-check").parent().find("small").text("");
@@ -278,10 +312,10 @@ $(document).on("input", "#tableData input, #tableData select", function () {
 	}
 });
 
-// Capitalize string 
+// Capitalize string
 
 function capitalizeFirstLetter(val) {
-    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+	return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
 
 // Adding form data into datable
@@ -307,7 +341,10 @@ function sendData() {
 			filedname = filedname.replace(/_/g, " ");
 			filedname = filedname.replace(/[[]]/g, " ");
 
-			$(this).parent(".mb-3").find(".error").text( capitalizeFirstLetter(filedname) + " field is required");
+			$(this)
+				.parent(".mb-3")
+				.find(".error")
+				.text(capitalizeFirstLetter(filedname) + " field is required");
 			checkForm = 0;
 		}
 		if ($(this).is(":checkbox, :radio")) {
@@ -463,6 +500,9 @@ $("#nav-home-tab").on("click", function () {
 	$("#nav-profile-tab").text(add_text);
 	$(".imageRemoveBtn").remove();
 	resetMainFormData();
+	if(localStorage.getItem("tabName") == "#invoiceTab"){
+		generateInvoiceNo();
+	}
 });
 
 // Table creation Dynamically and Live Search AJAX call start **********************************************************
@@ -601,13 +641,37 @@ $(document).on("click", "#editBtn", function () {
 		type: "POST",
 		data: { id: editId, table: table_name, key: key },
 		success: function (data) {
+
+			console.log(data);
 			data = JSON.parse(data);
+
+			
+
+			if(table_name == "invoice_master"){
+
+				let it = data.item;
+				data = data.data;
+				console.log(it.length);
+				let count = it.length - 1;
+
+				for (let i = 0; i < count; i++) {
+                    cloneItems();
+                }
+				for (let i = 0; i < count + 1; i++) {
+                    $('.itemAddId').eq(i).val(it[i].item_name);
+                    $('.item_id').eq(i).val(it[i].item_id);
+                    $('.itemPriceAddId').eq(i).val(it[i].item_price);
+                    $('.quantityAddId').eq(i).val(it[i].quantity);
+                    $('.amountAddId').eq(i).val(it[i].amount);
+                }
+
+			}
 
 			if ("NAME" in data) {
 				data["name"] = data["NAME"];
 			}
 
-			console.log(data);
+			// console.log(data);
 
 			// Mapping fileds from name
 			Object.keys(data).forEach(function (key) {
@@ -651,7 +715,7 @@ $(document).on("click", "#editBtn", function () {
 			let text = $("#nav-profile-tab").text();
 			let Update_text = text.replace("Add", "Update");
 			$("#nav-profile-tab").text(Update_text);
-			console.log(text);
+			// console.log(text);
 		},
 	});
 });
@@ -738,9 +802,7 @@ function resetMainFormData() {
 		$(".imageRemoveBtn").remove();
 		$(".error").text("");
 		if ($(".code-container .duplicate-row").length > 1) {
-			for (let i = 0; i < $(".code-container .duplicate-row").length; i++) {
-				$(".code-container .duplicate-row").eq(i).remove();
-			}
+			removeCloneOnHome();
 		}
 	}, 200);
 }
@@ -783,10 +845,8 @@ $(document).on(
 	}
 );
 
-
 // Calculate total amount from all fields
 function calculateTotalAmount() {
-
 	let totalAmount = 0;
 
 	$(".amountAddId").each(function () {
@@ -794,12 +854,9 @@ function calculateTotalAmount() {
 		totalAmount += amount;
 	});
 
-
 	// Update totalAmount field
 	$("#totalAmount").val(totalAmount.toFixed(2));
-
 }
-
 
 // client name get from auto-complete
 
@@ -811,7 +868,7 @@ $("#clientNameId").autocomplete({
 		let value = request.term; // `term` is the query the user is typing
 
 		$.ajax({
-			url: baseUrls+"autocomplete/client_autocomplete",
+			url: baseUrls + "autocomplete/client_autocomplete",
 			type: "POST",
 			data: { name: value },
 			success: function (data) {
@@ -824,19 +881,19 @@ $("#clientNameId").autocomplete({
 				let myArr = data.object;
 
 				// Populate clientAutoComplete with the fetched results
-				myArr.map(ele => {
+				myArr.map((ele) => {
 					clientAutoComplete.push({
 						id: ele.id,
-						label: ele.NAME,  // show up in the dropdown
-						value: ele.NAME,  // populate in the input field when selected
+						label: ele.NAME, // show up in the dropdown
+						value: ele.NAME, // populate in the input field when selected
 						phone: ele.phone,
 						email: ele.email,
-						address: ele.address
+						address: ele.address,
 					});
 				});
 
 				response(clientAutoComplete);
-			}
+			},
 		});
 	},
 	select: function (event, ui) {
@@ -844,7 +901,7 @@ $("#clientNameId").autocomplete({
 		$("#clientEmailId").val(ui.item.email);
 		$("#clientAddressId").val(ui.item.address);
 		$("#client_Id").val(ui.item.id);
-	}
+	},
 });
 
 // item name get from auto-complete
@@ -852,113 +909,272 @@ $("#clientNameId").autocomplete({
 let itemAutoComplete = [];
 
 function getitems(e) {
-    $('.itemAddId').autocomplete({
-        source: function (request, response) {
-            let value = request.term;
+	$(".itemAddId").autocomplete({
+		source: function (request, response) {
+			let value = request.term;
 
-            let idArr = [];
+			let idArr = [];
 
-            $(".item_id").each(function () {
+			$(".item_id").each(function () {
+				if (!$(this).val() == "") {
+					idArr.push($(this).val());
+				}
+			});
 
-                if (!$(this).val() == "") {
+			let newSet = new Set(idArr);
 
-                    idArr.push($(this).val());
+			idArr = [...newSet];
 
-                }
+			console.log(idArr);
 
+			$.ajax({
+				url: baseUrls + "autocomplete/item_autocomplete",
+				type: "POST",
+				data: { item_name: value, arrId: idArr },
+				success: function (data) {
+					// console.log(data);
+					if (data == 0) {
+						itemAutoComplete = [];
+						return false;
+					} else {
+						data = JSON.parse(data);
+						itemAutoComplete = [];
 
-            })
+						// console.log(data.query);
 
-            let newSet = new Set(idArr);
+						let myArr = data.object;
 
-            idArr = [...newSet];
+						// Populate itemAutoComplete with the fetched results
+						myArr.map((ele) => {
+							itemAutoComplete.push({
+								id: ele.id,
+								label: ele.item_name, // show up in the dropdown
+								value: ele.item_name, // populate in the input field when selected
+								price: ele.item_price,
+							});
+						});
 
-            console.log(idArr);
-
-            $.ajax({
-                url: baseUrls+"autocomplete/item_autocomplete",
-                type: "POST",
-                data: { item_name: value, arrId: idArr },
-                success: function (data) {
-                    // console.log(data);
-                    if (data == 0) {
-                        itemAutoComplete = [];
-                        return false
-                    }
-                    else {
-                        data = JSON.parse(data);
-                        itemAutoComplete = [];
-
-                        // console.log(data.query);
-
-                        let myArr = data.object;
-
-                        // Populate itemAutoComplete with the fetched results
-                        myArr.map(ele => {
-                            itemAutoComplete.push({
-                                id: ele.id,
-                                label: ele.item_name,  // show up in the dropdown
-                                value: ele.item_name,  // populate in the input field when selected
-                                price: ele.item_price,
-                            });
-                        });
-
-                        response(itemAutoComplete);
-                    }
-                }
-            });
-        },
-        select: function (event, ui) {
-            $(this).parents('.duplicate-row').find(".itemPriceAddId").val(ui.item.price);
-            $(this).parents('.duplicate-row').find(".item_id").val(ui.item.id);
-            $(this).parents('.duplicate-row').find(".quantityAddId").val(1);
-			$(this).parents('.duplicate-row').find(".quantityAddId").trigger("input");
-        }
-    });
-
-
+						response(itemAutoComplete);
+					}
+				},
+			});
+		},
+		select: function (event, ui) {
+			$(this)
+				.parents(".duplicate-row")
+				.find(".itemPriceAddId")
+				.val(ui.item.price);
+			$(this).parents(".duplicate-row").find(".item_id").val(ui.item.id);
+			$(this).parents(".duplicate-row").find(".quantityAddId").val(1);
+			$(this).parents(".duplicate-row").find(".quantityAddId").trigger("input");
+		},
+	});
 }
 
-// removing error from client details 
+// removing error from client details and if client is empty also removing all details of client
 
-$("#clientNameId").on('input' , function(){
-	
-	if(!$("#clientNameId").val() == ""){
-
-		console.log(" iam here ")
+$("#clientNameId").on("input", function () {
+	if (!$("#clientNameId").val() == "") {
+		console.log(" iam here ");
 
 		$("#clientPhoneId").parent(".mb-3").find(".error").text("");
 		$("#clientEmailId").parent(".mb-3").find(".error").text("");
 		$("#clientAddressId").parent(".mb-3").find(".error").text("");
-
-	}else{
-		$(this).parent(".mb-3").find(".error").text("Client name is required");
+		$("#clientAddressId").parent(".mb-3").find(".error").text("");
+	} else {
+		$("#clientPhoneId").val("");
+		$("#clientEmailId").val("");
+		$("#clientAddressId").val("");
+		$("#client_Id").val("");
 	}
+});
 
+// removing error on item fields and if item is empty also removing all details of item
 
-})
-
+$(document).on("input", ".itemAddId", function () {
+	if (!$(this).val() == "") {
+		$(this).parent('.mb-3').find(".error").text("");
+		$(this)
+			.parents(".duplicate-row")
+			.find(".itemPriceAddId")
+			.parent(".mb-3")
+			.find(".error")
+			.text("");
+		$(this)
+			.parents(".duplicate-row")
+			.find(".quantityAddId")
+			.parent(".mb-3")
+			.find(".error")
+			.text("");
+		$(this)
+			.parents(".duplicate-row")
+			.find(".amountAddId")
+			.parent(".mb-3")
+			.find(".error")
+			.text("");
+		$("#totalAmount").parent(".mb-3").find(".error").text("");
+		calculateTotalAmount();
+	} else {
+		$(this).parents(".duplicate-row").find(".itemPriceAddId").val("");
+		$(this).parents(".duplicate-row").find(".quantityAddId").val("");
+		$(this).parents(".duplicate-row").find(".amountAddId").val("");
+		$(this).parents(".duplicate-row").find(".amountAddId").val("");
+		$(this).parents(".duplicate-row").find(".item_id").val("");
+		calculateTotalAmount();
+	}
+});
 
 // Total amount of each item
-$(document).on('input', ".quantityAddId", function () {
+$(document).on("input", ".quantityAddId", function () {
+	let price = $(this).parents(".duplicate-row").find(".itemPriceAddId").val();
 
-	let price = $(this).parents(".duplicate-row").find('.itemPriceAddId').val();
-
-	let amount = $(this).parents(".duplicate-row").find(".amountAddId").val(parseFloat($(this).val() * price).toFixed(2));
+	let amount = $(this)
+		.parents(".duplicate-row")
+		.find(".amountAddId")
+		.val(parseFloat($(this).val() * price).toFixed(2));
 
 	// Update total amount dynamically whenever the quantity is updated
 	calculateTotalAmount();
-
 });
 
-$(document).on('input' , '.quantityAddId' , function(){
-
-	if($(this).parents('.duplicate-row').find('.itemPriceAddId').val() > 0 ){
-		if($(this).val() <= 0 ){
+// quntity will never become 0 and less than 0
+$(document).on("input", ".quantityAddId", function () {
+	if ($(this).parents(".duplicate-row").find(".itemPriceAddId").val() > 0) {
+		if ($(this).val() <= 0) {
 			$(this).val(1);
-			$(this).parents('.duplicate-row').find(".quantityAddId").trigger("input");
+			$(this).parents(".duplicate-row").find(".quantityAddId").trigger("input");
+		}
+	}
+});
+
+// invoice data sending
+
+function sendInvoiceData() {
+	console.log("sending....");
+
+	let checkForm = 1;
+
+	$("#tableData input, #tableData select").each(function () {
+		if ($(this).is("input[name=id]")) {
+			return; // This will skip the current loop for id
+		}
+		if ($(this).val() == "" || null || undefined) {
+			if ($(".add-user").hasClass("d-none") && $("input:file").val() == "") {
+				return;
+			}
+			if (
+				$(".add-user").hasClass("d-none") &&
+				$("input:password").val() == ""
+			) {
+				return;
+			}
+			let filedname = $(this).attr("name");
+			filedname = filedname.replace(/_/g, " ");
+			filedname = filedname.replace(/[[]]/g, " ");
+
+			$(this).parent(".mb-3").find(".error").text( capitalizeFirstLetter(filedname) + " field is required");
+			checkForm = 0;
+		}
+		if ($(this).is(":checkbox, :radio")) {
+			let name = $(this).attr("name");
+			if (name && $("input[name='" + name + "']:checked").length === 0) {
+				$(this)
+					.closest(".form-check")
+					.parent()
+					.find("small")
+					.text("Field is required");
+				checkForm = 0;
+			}
+		}
+		if (!$(".error").text() == "") {
+			checkForm = 0;
+		}
+	});
+
+	if (checkForm == 1) {
+		console.log("sended");
+
+		let formData = new FormData(tableData);
+
+		if (
+			$(".add-user").hasClass("d-none") &&
+			!$(".update-user").hasClass("d-none")
+		) {
+			formData.append("action", "update");
 		}
 
+		$.ajax({
+			url: baseUrls + "InsertController/insertInvoice",
+			type: "POST",
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function (data) {
+				data = JSON.parse(data);
+				if (data.errors) {
+					Object.keys(data.errors).forEach(function (key) {
+						$(`input[name=${key}]`).parent().find(".error").text(data.errors[key]);
+					});
+				}
+				if(data.success){
+
+					let change = $("#nav-home-tab");
+					let tab = new bootstrap.Tab(change);
+					tab.show();
+					resetMainFormData();
+					$(".imageRemoveBtn").remove();
+						Swal.fire({
+							title: "Record added successfully",
+							icon: "success",
+							draggable: false,
+						});
+						getTable();
+
+				}
+			},
+		});
+	} else {
+		console.log("validate form first");
+	}
+}
+
+// generating invoice number
+function generateInvoiceNo(){
+
+	$.ajax({
+
+		url: baseUrls+"insertcontroller/generateInvoice",
+		type: "POST",
+		success: function(data) {
+
+			data = JSON.parse(data);
+
+			data = data.invoice_id;
+
+			let invoice_number = "IN"+(Number(data)+1);
+
+			$("#invoice_numberId").val(invoice_number);
+
+		}
+
+	})
+
+}
+if(localStorage.getItem("tabName") == "#invoiceTab"){
+	generateInvoiceNo();
+}
+
+// calling invoice generater function
+$("#nav-profile-tab").on('click' , function(){
+
+	if(localStorage.getItem("tabName") == "#invoiceTab"){
+		generateInvoiceNo();
 	}
 
 })
+
+// remove clone 
+function removeCloneOnHome() {
+    $(".delete-row").trigger('click');
+
+}

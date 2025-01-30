@@ -11,6 +11,7 @@ class InsertController extends CI_Controller
         $this->load->library('form_validation');
     }
 
+    // for client , user , item
     public function insert()
     {
         $table_name = $this->input->post('table');
@@ -114,6 +115,11 @@ class InsertController extends CI_Controller
                 'label' => 'Item price',
                 'rules' => 'required|trim|numeric'
             ],
+            [
+                'field' => 'total_amount',
+                'label' => 'Total amount',
+                'rules' => 'required|trim|numeric'
+            ],
 
         ];
 
@@ -195,4 +201,106 @@ class InsertController extends CI_Controller
             echo json_encode(['errorKeys' => $keys, 'errorValues' => $values, 'fields' => 'fields']);
         }
     }
+
+    // for invoice master only
+    public function insertInvoice(){
+
+
+        $validation = [
+
+            [
+                'field' => 'invoice_number',
+                'label' => 'Invoice number',
+                'rules' => 'required|trim|min_length[2]|regex_match[/^[a-zA-Z0-9]+$/]|is_unique[invoice_master.invoice_number]'
+            ],
+            [
+                'field' => 'name',
+                'label' => 'Name',
+                'rules' => 'required|trim|min_length[2]|regex_match[/^[a-zA-Z ]+$/]'
+            ],
+            [
+                'field' => 'phone',
+                'label' => 'Phone',
+                'rules' => 'required|trim|max_length[10]|regex_match[/^[0-9]+$/]'
+            ],
+            [
+                'field' => 'email',
+                'label' => 'Email',
+                'rules' => 'required|trim|valid_emails'
+            ],
+            [
+                'field' => 'invoice_number',
+                'label' => 'Invoice number',
+                'rules' => 'required|trim|min_length[3]|max_length[10]|regex_match[/^[A-Za-z0-9]{3,10}$/]'
+            ],
+            // [
+            //     'field' => 'item_name[]',
+            //     'label' => 'Item name',
+            //     'rules' => 'required|trim|min_length[2]|regex_match[/^[a-zA-Z- ]+$/]'
+            // ],
+            [
+                'field' => 'address',
+                'label' => 'Address',
+                'rules' => 'required|trim',
+            ],
+            // [
+            //     'field' => 'item_price[]',
+            //     'label' => 'Item price',
+            //     'rules' => 'required|trim',
+            // ],
+            // [
+            //     'field' => 'amount[]',
+            //     'label' => 'Amount',
+            //     'rules' => 'required|trim|numeric',
+            // ],
+            [
+                'field' => 'total_amount',
+                'label' => 'Total amount',
+                'rules' => 'required|trim|numeric',
+            ],
+
+
+        ];
+
+        $this->form_validation->set_rules($validation);
+
+        if($this->form_validation->run()){
+
+            $formData = $this->input->post();
+
+            if(isset($formData['action'])){
+
+                $this->load->model('insertmodel');
+                echo $this->insertmodel->updateInvoice($formData);
+
+            }else{
+
+                $this->load->model('insertmodel');
+                echo $this->insertmodel->insertInvoice($formData);
+            }
+    
+
+        }else{
+
+             $errors = $this->form_validation->error_array();
+
+             echo json_encode(['errors' => $errors]);
+
+        }
+
+
+    }
+
+    // for generating invoice number
+    public function generateInvoice(){
+
+        // echo "hello ji i am here";
+
+        $this->load->model('insertmodel');
+        $result = $this->insertmodel->generateInvoiveNumber();
+
+        echo $result;
+
+    }
+
 }

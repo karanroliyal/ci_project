@@ -20,7 +20,7 @@ include_once "templates/header.php" ?>
 
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">All invoice</button>
+                    <button class="nav-link active" id="nav-home-tab" onclick="removeCloneOnHome()" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">All invoice</button>
                     <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Add invoice</button>
                 </div>
             </nav>
@@ -35,7 +35,7 @@ include_once "templates/header.php" ?>
 
                             <div class="col-md-1 col-sm-6 col-xl-1 mt-2">
                                 <label for="invoiceId" class="form-label">Invoice id</label>
-                                <input type="number" id="invoiceId" name="invoice_id" class="form-control">
+                                <input type="number" id="invoiceId" name="invoice_id" class="form-control" min='1'>
                             </div>
 
                             <div class="col-md-2 col-sm-6 col-xl-2 mt-2">
@@ -45,7 +45,7 @@ include_once "templates/header.php" ?>
 
                             <div class="col-md-2 col-sm-6 col-xl-2 mt-2">
                                 <label for="searchClientPhone" class="form-label">Client phone</label>
-                                <input type="text" name="phone" id="searchClientPhone" class="form-control">
+                                <input type="number" name="phone" id="searchClientPhone" class="form-control">
                             </div>
 
                             <div class="col-md-2 col-sm-6 col-xl-2 mt-2">
@@ -173,18 +173,18 @@ include_once "templates/header.php" ?>
                                 <div class="col-md-3 col-xl-3 col-sm-6 col-xs-6 mb-3">
                                     <label for="clientPhoneId" class="form-label">Phone <span class="text-danger">*</span></i></label>
                                     <input type="text" class="form-control " id="clientPhoneId" name="phone" maxlength="10" readonly>
-                                    <small class="text-danger "></small>
+                                    <small class="text-danger error"></small>
                                 </div>
 
                                 <div class="col-md-3 col-xl-3 col-sm-6 col-xs-6 mb-3">
                                     <label for="clientEmailId" class="form-label">Email <span class="text-danger">*</span></i></label>
                                     <input type="text" class="form-control " id="clientEmailId" name="email" maxlength="70" readonly>
-                                    <small class="text-danger "></small>
+                                    <small class="text-danger error"></small>
                                 </div>
                                 <div class="col-md-3 col-xl-3 col-sm-6 col-xs-6 mb-3">
                                     <label for="clientAddressId" class="form-label">Address <span class="text-danger">*</span></i></label>
                                     <input type="text" class="form-control " id="clientAddressId" name="address"  readonly>
-                                    <small class="text-danger "></small>
+                                    <small class="text-danger error"></small>
                                 </div>
 
                             </div>
@@ -209,20 +209,20 @@ include_once "templates/header.php" ?>
 
                                     <div class="col-md-3 col-xl-3 col-sm-6 col-xs-6 mb-3">
                                         <label for="itemPriceId" class="form-label">Item price (₹) <span class="text-danger">*</span></i></label>
-                                        <input type="text" class="form-control itemPriceAddId " id="itemPriceId" name="item_price[]" readonly>
+                                        <input type="text" class="form-control itemPriceAddId " id="itemPriceId" name="item_price[]" readonly >
                                         <small class="text-danger error"></small>
                                     </div>
 
                                     <div class="col-md-2 col-xl-2 col-sm-6 col-xs-6 mb-3">
                                         <label for="itemQuantityId" class="form-label">Quantity <span class="text-danger">*</span></i></label>
-                                        <input type="number" class="form-control quantityAddId " id="itemQuantityId" name="quantity[]" min="1"  >
-                                        <small class="text-danger "></small>
+                                        <input type="number" class="form-control quantityAddId " id="itemQuantityId" name="quantity[]" min="1" >
+                                        <small class="text-danger error"></small>
                                     </div>
 
                                     <div class="col-md-3 col-xl-3 col-sm-6 col-xs-6 mb-3">
                                         <label for="itemAmount" class="form-label">Amount (₹) <span class="text-danger">*</span></i></label>
-                                        <input type="number" class="form-control amountAddId " id="itemAmount" name="quantity[]" readonly>
-                                        <small class="text-danger "></small>
+                                        <input type="text" class="form-control amountAddId " id="itemAmount" name="amount[]" readonly>
+                                        <small class="text-danger error"></small>
                                     </div>
 
                                     <div class="col-md-1 col-xl-1 mt-4">
@@ -236,7 +236,7 @@ include_once "templates/header.php" ?>
                             <div class="row">
 
                                 <div class="col-md-6 col-xl-6 col-sm-6 col-xs-6 mt-4">
-                                    <button class="btn btn-success" onclick="cloneItems()" type="button">Add item</button>
+                                    <button class="btn btn-success" onclick="cloneItems()" type="button"><i class="bi bi-bag-plus"></i> Add item</button>
                                 </div>
                                 <div class="col-md-6 col-xl-6 col-sm-6 col-xs-6 mb-3">
                                 <label for="totalAmount" class="form-label">Total Amount <span class="text-danger">*</span></i></label>
@@ -251,13 +251,13 @@ include_once "templates/header.php" ?>
 
 
 
-                        <input type="hidden" id="userId" name="id">
-                        <input type="hidden" name="table" value="client_master">
+                        <input type="hidden" id="userIdd" name="invoice_id" value="null">
+                        <input type="hidden" name="table" value="invoice_master">
                         <img src="" id="myUploadView" class="d-none">
 
                         <div class="col-md-12 mt-4">
-                            <button type="button" class="add-user btn btn-dark" onclick="sendData()"><i class="bi bi-person-add"></i> Add invoice</button>
-                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendData()"><i class="bi bi-arrow-bar-up"></i> Update invoice</button>
+                            <button type="button" class="add-user btn btn-dark" onclick="sendInvoiceData()"><i class="bi bi-person-add"></i> Add invoice</button>
+                            <button type="button" value="update" name="updateBtn" class="update-user d-none btn btn-dark" onclick="sendInvoiceData()"><i class="bi bi-arrow-bar-up"></i> Update invoice</button>
                             <button type="reset" class="btn btn-danger" onclick="resetMainFormData()"><i class="bi bi-arrow-counterclockwise"></i> reset</button>
                         </div>
 
