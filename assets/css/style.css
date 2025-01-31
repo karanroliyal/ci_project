@@ -216,3 +216,37 @@ body {
 }
 
 /* **************************** Layout css end ********************************* */
+
+
+
+/* **************************** Dashboard css start ********************************* */
+
+
+    .dashboard-container{
+
+        .dashboard-card{
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+            i{
+                font-size: 220%;
+            }
+        }
+        .dashboard-card:hover{
+            margin-top: -5px;
+        }
+
+        .card-link{
+            text-decoration: none;
+            color: #212529;
+        }
+        .bold-number{
+            font-weight: 800;
+        }
+
+    }
+
+
+/* **************************** Dashboard css end ********************************* */
+
+
+

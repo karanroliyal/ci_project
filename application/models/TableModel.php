@@ -112,16 +112,15 @@ class TableModel extends CI_Model
 
                 // for pdf and mail columns
                 if($table_name=='invoice_master'){
-                    $table .=  "<td class='text-center' ><a><i class='bi bi-file-earmark-pdf-fill text-danger' data-pdfId='{$row[$column_names_of_table[0]]}'></i></a></td>
-                    
-                                <td class='text-center' ><i class='bi bi-envelope-plus-fill text-success' data-mailId='{$row[$column_names_of_table[0]]}'></i></td>";
+                    $table .=  "<td class='text-center' ><a href='".base_url()."pdfcontroller?myId={$row[$column_names_of_table[0]]}' target='_blank' ><i class='bi bi-file-earmark-pdf-fill text-danger' data-pdfId='{$row[$column_names_of_table[0]]}'></i></a></td>
+                                <td class='text-center' ><i data-bs-toggle='modal' data-bs-target='#exampleModal' class='bi bi-envelope-plus-fill text-success mailSend' data-mailId='{$row[$column_names_of_table[0]]}'></i></td>";
                 }
 
                 $table .= "<td class='text-center'>
                 <button class='btn btn-primary rounded-circle' id='editBtn'  data-editid='{$row[$column_names_of_table[0]]}' data-key='" . array_values($column_names_of_table)[0] . "' data-tableName='{$table_name}'><i class='bi bi-pencil-fill'></i></button>
                 </td>
                 <td class='text-center'>
-                <button class='btn btn-danger rounded-circle' id='deleteBtn' data-key='" . array_values($column_names_of_table)[0] . "' data-deleteid='{$row[$column_names_of_table[0]]}' data-tableName='{$table_name}'><i class='bi bi-x-square-fill'></i></button>
+                <button class='btn btn-danger rounded-circle' id='deleteBtn' data-key='" . array_values($column_names_of_table)[0] . "' data-deleteid='{$row[$column_names_of_table[0]]}' data-tableName='{$table_name}'><i class='bi bi-x-square-fill' ></i></button>
                 </td>
                 </tr>";
             }

@@ -132,6 +132,51 @@ include_once "templates/header.php" ?>
                         <!-- Dynamic table and pagination end  -->
 
 
+                        <!-- Mail icon trigger modal -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="myMailForm">
+                                            <input type="hidden" id="invoice_id_hidden">
+                                            <div class="mb-3">
+                                                <label for="recipient_name_id" class="form-label">Recipient name:</label>
+                                                <input type="text" name="recipient_name" id="recipient_name_id" class="form-control " readonly>
+                                                <small class="text-danger error"></small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="mail_to_id" class="form-label">To:</label>
+                                                <input type="text" name="mail_to" id="mail_to_id" class="form-control" readonly>
+                                                <small class="text-danger error"></small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="subjectId" class="form-label">Subject:</label>
+                                                <input type="text" name="subject" id="subjectId" class="form-control " >
+                                                <small class="text-danger error"></small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="messageId" class="form-label">Message:</label>
+                                                <textarea type="text" name="message" id="messageId" class="form-control " rows="5" ></textarea>
+                                                <small class="text-danger error"></small>
+                                            </div>
+
+                                            <div class="mail_send_container">
+
+                                                <button type="button" class="btn btn-success" onclick="sendMail()" >Send mail</button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Mail icon trigger modal -->
+
 
                     </div>
 
@@ -183,7 +228,7 @@ include_once "templates/header.php" ?>
                                 </div>
                                 <div class="col-md-3 col-xl-3 col-sm-6 col-xs-6 mb-3">
                                     <label for="clientAddressId" class="form-label">Address <span class="text-danger">*</span></i></label>
-                                    <input type="text" class="form-control " id="clientAddressId" name="address"  readonly>
+                                    <input type="text" class="form-control " id="clientAddressId" name="address" readonly>
                                     <small class="text-danger error"></small>
                                 </div>
 
@@ -209,13 +254,13 @@ include_once "templates/header.php" ?>
 
                                     <div class="col-md-3 col-xl-3 col-sm-6 col-xs-6 mb-3">
                                         <label for="itemPriceId" class="form-label">Item price (₹) <span class="text-danger">*</span></i></label>
-                                        <input type="text" class="form-control itemPriceAddId " id="itemPriceId" name="item_price[]" readonly >
+                                        <input type="text" class="form-control itemPriceAddId " id="itemPriceId" name="item_price[]" readonly>
                                         <small class="text-danger error"></small>
                                     </div>
 
                                     <div class="col-md-2 col-xl-2 col-sm-6 col-xs-6 mb-3">
                                         <label for="itemQuantityId" class="form-label">Quantity <span class="text-danger">*</span></i></label>
-                                        <input type="number" class="form-control quantityAddId " id="itemQuantityId" name="quantity[]" min="1" >
+                                        <input type="number" class="form-control quantityAddId " id="itemQuantityId" name="quantity[]" min="1">
                                         <small class="text-danger error"></small>
                                     </div>
 
@@ -226,7 +271,7 @@ include_once "templates/header.php" ?>
                                     </div>
 
                                     <div class="col-md-1 col-xl-1 mt-4">
-                                        <button type="button" class="btn btn-danger delete-row" ><i class="bi bi-bag-x"></i></button>
+                                        <button type="button" class="btn btn-danger delete-row"><i class="bi bi-bag-x"></i></button>
                                     </div>
 
                                 </div>
@@ -239,7 +284,7 @@ include_once "templates/header.php" ?>
                                     <button class="btn btn-success" onclick="cloneItems()" type="button"><i class="bi bi-bag-plus"></i> Add item</button>
                                 </div>
                                 <div class="col-md-6 col-xl-6 col-sm-6 col-xs-6 mb-3">
-                                <label for="totalAmount" class="form-label">Total Amount <span class="text-danger">*</span></i></label>
+                                    <label for="totalAmount" class="form-label">Total Amount <span class="text-danger">*</span></i></label>
                                     <input type="text" class="form-control" id="totalAmount" name="total_amount" readonly>
                                     <small class="text-danger error"></small>
                                 </div>

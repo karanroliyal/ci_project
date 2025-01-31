@@ -151,7 +151,8 @@ const fileds_for_validation = [
 	},
 	{
 		id: "#invoice_numberId",
-		errorText: "Only numbers and charters are allowed and max length is 10 and min length is 3",
+		errorText:
+			"Only numbers and charters are allowed and max length is 10 and min length is 3",
 		regExp: /^[a-zA-Z0-9]{3,10}$/,
 	},
 	{
@@ -500,7 +501,7 @@ $("#nav-home-tab").on("click", function () {
 	$("#nav-profile-tab").text(add_text);
 	$(".imageRemoveBtn").remove();
 	resetMainFormData();
-	if(localStorage.getItem("tabName") == "#invoiceTab"){
+	if (localStorage.getItem("tabName") == "#invoiceTab") {
 		generateInvoiceNo();
 	}
 });
@@ -641,30 +642,25 @@ $(document).on("click", "#editBtn", function () {
 		type: "POST",
 		data: { id: editId, table: table_name, key: key },
 		success: function (data) {
-
 			console.log(data);
 			data = JSON.parse(data);
 
-			
-
-			if(table_name == "invoice_master"){
-
+			if (table_name == "invoice_master") {
 				let it = data.item;
 				data = data.data;
 				console.log(it.length);
 				let count = it.length - 1;
 
 				for (let i = 0; i < count; i++) {
-                    cloneItems();
-                }
+					cloneItems();
+				}
 				for (let i = 0; i < count + 1; i++) {
-                    $('.itemAddId').eq(i).val(it[i].item_name);
-                    $('.item_id').eq(i).val(it[i].item_id);
-                    $('.itemPriceAddId').eq(i).val(it[i].item_price);
-                    $('.quantityAddId').eq(i).val(it[i].quantity);
-                    $('.amountAddId').eq(i).val(it[i].amount);
-                }
-
+					$(".itemAddId").eq(i).val(it[i].item_name);
+					$(".item_id").eq(i).val(it[i].item_id);
+					$(".itemPriceAddId").eq(i).val(it[i].item_price);
+					$(".quantityAddId").eq(i).val(it[i].quantity);
+					$(".amountAddId").eq(i).val(it[i].amount);
+				}
 			}
 
 			if ("NAME" in data) {
@@ -993,7 +989,7 @@ $("#clientNameId").on("input", function () {
 
 $(document).on("input", ".itemAddId", function () {
 	if (!$(this).val() == "") {
-		$(this).parent('.mb-3').find(".error").text("");
+		$(this).parent(".mb-3").find(".error").text("");
 		$(this)
 			.parents(".duplicate-row")
 			.find(".itemPriceAddId")
@@ -1072,7 +1068,10 @@ function sendInvoiceData() {
 			filedname = filedname.replace(/_/g, " ");
 			filedname = filedname.replace(/[[]]/g, " ");
 
-			$(this).parent(".mb-3").find(".error").text( capitalizeFirstLetter(filedname) + " field is required");
+			$(this)
+				.parent(".mb-3")
+				.find(".error")
+				.text(capitalizeFirstLetter(filedname) + " field is required");
 			checkForm = 0;
 		}
 		if ($(this).is(":checkbox, :radio")) {
@@ -1113,23 +1112,42 @@ function sendInvoiceData() {
 				data = JSON.parse(data);
 				if (data.errors) {
 					Object.keys(data.errors).forEach(function (key) {
-						$(`input[name=${key}]`).parent().find(".error").text(data.errors[key]);
+						$(`input[name=${key}]`)
+							.parent()
+							.find(".error")
+							.text(data.errors[key]);
 					});
 				}
-				if(data.success){
-
+				if (data.success) {
 					let change = $("#nav-home-tab");
 					let tab = new bootstrap.Tab(change);
 					tab.show();
-					resetMainFormData();
-					$(".imageRemoveBtn").remove();
+
+					if (
+						$(".add-user").hasClass("d-none") &&
+						!$(".update-user").hasClass("d-none")
+					) {
+						resetMainFormData();
+						let text = $("#nav-profile-tab").text();
+						let add_text = text.replace("Update", "Add");
+						$("#nav-profile-tab").text(add_text);
+						$("#userIdd").val("");
+						$(".imageRemoveBtn").remove();
+						Swal.fire({
+							title: "Record updated successfully",
+							icon: "success",
+							draggable: false,
+						});
+					} else {
+						resetMainFormData();
+						$(".imageRemoveBtn").remove();
 						Swal.fire({
 							title: "Record added successfully",
 							icon: "success",
 							draggable: false,
 						});
-						getTable();
-
+					}
+					getTable();
 				}
 			},
 		});
@@ -1139,43 +1157,140 @@ function sendInvoiceData() {
 }
 
 // generating invoice number
-function generateInvoiceNo(){
-
+function generateInvoiceNo() {
 	$.ajax({
-
-		url: baseUrls+"insertcontroller/generateInvoice",
+		url: baseUrls + "insertcontroller/generateInvoice",
 		type: "POST",
-		success: function(data) {
-
+		success: function (data) {
 			data = JSON.parse(data);
 
 			data = data.invoice_id;
 
-			let invoice_number = "IN"+(Number(data)+1);
+			let invoice_number = "IN" + (Number(data) + 1);
 
 			$("#invoice_numberId").val(invoice_number);
-
-		}
-
-	})
-
+		},
+	});
 }
 
-if(localStorage.getItem("tabName") == "#invoiceTab"){
+if (localStorage.getItem("tabName") == "#invoiceTab") {
 	generateInvoiceNo();
 }
 
 // calling invoice generater function
-$("#nav-profile-tab").on('click' , function(){
-
-	if(localStorage.getItem("tabName") == "#invoiceTab"){
+$("#nav-profile-tab").on("click", function () {
+	if (localStorage.getItem("tabName") == "#invoiceTab") {
 		generateInvoiceNo();
 	}
+});
 
-})
-
-// remove clone 
+// remove clone
 function removeCloneOnHome() {
-    $(".delete-row").trigger('click');
+	$(".delete-row").trigger("click");
+}
+
+// get mail data for sending also downloading pdf in pdfs folder
+$(document).on("click", ".mailSend", function () {
+	console.log($(this).data("mailid"));
+	$("#myMailForm .error").text("");
+	let mailId = $(this).data("mailid");
+
+	$("#myMailForm").trigger("reset");
+
+	$.ajax({
+		url: baseUrls + "emailcontroller/clientdata",
+		type: "POST",
+		data: { invoice_id: mailId },
+		success: function (data) {
+			data = JSON.parse(data);
+			$("#recipient_name_id").val(data.name);
+			$("#mail_to_id").val(data.email);
+			$("#invoice_id_hidden").val(data.invoice_id);
+		},
+	});
+
+	$.ajax({
+		url: baseUrls + "pdfcontroller/mailPdf",
+		type: "POST",
+		data: { mail: mailId },
+		success: function (data) {
+			console.log("downloaded pdf");
+		},
+	});
+});
+
+// send mail
+
+function sendMail() {
+	let checkForm = 1;
+
+	$("#myMailForm .error").text("");
+
+	$("#myMailForm input , textarea").each(function () {
+		if ($(this).val().trim() == "") {
+			$(this)
+				.next(".error")
+				.text($(this).attr("name") + " is required");
+			checkForm = 0;
+		}
+	});
+
+	if (checkForm == 1) {
+		let invoiceId = $("#invoice_id_hidden").val();
+
+		let formData = new FormData(myMailForm);
+
+		let pdfFilePath = baseUrls + "pdfs/generated_pdf_" + invoiceId + ".pdf";
+
+		formData.append("pdf_file_path", pdfFilePath);
+
+		$.ajax({
+			url: baseUrls + "emailcontroller/mail",
+			type: "POST",
+			data: formData,
+			processData: false,
+			contentType: false,
+			beforeSend: function () {
+				$(".mail_send_container").html(`<button class="btn btn-success" type="button" disabled>
+  					<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+  					<span role="status">Sending...</span>
+				</button>`);
+			},
+			success: function (data) {
+				data = JSON.parse(data);
+				if(data.success == true){
+					console.log("Mail sended");
+					$("#subjectId").val("");
+					$("#messageId").val("");
+					$(".mail_send_container").html();
+					$(".mail_send_container").html(`<button type="button" class="btn btn-success" onclick="sendMail()" >Send mail</button>`);
+					Swal.fire({
+						title: "Mail Sended Successfully!",
+						icon: "success",
+						draggable: false
+					  });
+				}
+				else{
+					Swal.fire({
+						title: "Unable to send Mail ",
+						icon: "error",
+						draggable: false
+					  });
+				}
+			},
+		});
+	}
+}
+// side bar hide show 
+function hideSideBar(){
+
+	$(".sidebar_wrapper").toggle("slide", { direction: "left" }, 1000);
+  
+  }
+
+
+function dashboardData(){
+
+	
 
 }

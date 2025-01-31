@@ -3,7 +3,7 @@
         </div>
         <div class="col-md-10 row justify-content-between align-items-center">
             <div class="col-md-2">
-                <i class="bi bi-list text-light"></i>
+                <i class="bi bi-list text-light " onclick="hideSideBar()"></i>
             </div>
             <div class="col-md-2 d-flex align-items-center profile_section">
                 <small class="text-light user-name"><b><?=$_SESSION['name']?></b></small>
