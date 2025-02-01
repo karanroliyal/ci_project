@@ -30,4 +30,12 @@ class TableController extends CI_Controller{
 
     }
 
+    public function dashboardData(){
+
+        $this->load->model('tablemodel');
+        echo $this->tablemodel->dashboardFunction();
+        
+
+    }
+
 }

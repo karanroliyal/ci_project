@@ -28,6 +28,11 @@ class PagesController extends CI_Controller{
         $this->load->view('invoice');
 
     }
+    public function sessionControl(){
+
+        $this->load->view('index');
+
+    }
 
 
 }

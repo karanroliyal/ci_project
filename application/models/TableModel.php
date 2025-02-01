@@ -35,7 +35,7 @@ class TableModel extends CI_Model
 
         if (in_array('address', $column_names_of_table) && in_array('state', $column_names_of_table) && in_array('district', $column_names_of_table)) {
             array_splice($column_names_of_table, 4, 3);
-            $column_names_of_table[4] = 'concat_ws("," , address , sm.state_name , dm.district_name)';
+            $column_names_of_table[4] = 'concat_ws(" , " , address , sm.state_name , dm.district_name)';
             $column_names_of_table[5] = 'pincode';
         }
 
@@ -66,6 +66,9 @@ class TableModel extends CI_Model
         $this->db->order_by($sort_on_column, $order_by);
          $this->db->select($column_names_of_table)->from($table_name);
 
+         if($table_name == 'user_master'){
+            $this->db->where('id !=' , $_SESSION['id']);
+         }
          
         $this->db->group_start();
         foreach ($liveFormData as $key => $value) {
@@ -143,7 +146,12 @@ class TableModel extends CI_Model
         if($deleteData['tableName'] !== 'invoice_master'){
 
             $this->db->where($deleteData['key'], $deleteData['deleteid']);
-            $this->db->delete($deleteData['tableName']);
+            if($this->db->delete($deleteData['tableName'])){
+                echo true;
+            }else{
+                echo false;
+            }
+            
 
         }
         else{
@@ -153,9 +161,12 @@ class TableModel extends CI_Model
             if($this->db->delete('invoice')){
 
                 $this->db->where('invoice_id', $deleteData['deleteid']);
-                $this->db->delete('invoice_master');
 
-            
+                if($this->db->delete('invoice_master')){
+                    echo true;
+                }else{
+                    echo false;
+                }
 
             }
 
@@ -163,4 +174,17 @@ class TableModel extends CI_Model
 
         
     }
+
+    function dashboardFunction(){
+
+        $client =  $this->db->get('client_master')->num_rows();
+        $user =  $this->db->get('user_master')->num_rows();
+        $item =  $this->db->get('item_master')->num_rows();
+
+        $invoice = $this->db->select('sum(total_amount) as invoice')->get('invoice_master')->row();
+
+        return json_encode(['client'=>$client , 'user'=>$user , 'item'=>$item , 'invoice'=>"₹ ".$invoice->invoice]);
+
+    }
+
 }

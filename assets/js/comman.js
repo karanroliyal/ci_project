@@ -1,8 +1,14 @@
+
+
 $(document).ready(function () {
 	console.log("Comman js is loaded");
 
 	// Loading table on load
-	getTable();
+	if(localStorage.getItem("tabName") == '#dashoardTab'){
+		
+	}else{
+		getTable();
+	}
 });
 
 let baseUrls = $("#baseUrl").val();
@@ -17,7 +23,7 @@ function logout() {
 		type: "POST",
 		success: function (data) {
 			if (data == "success") {
-				window.location.href = baseUrls + "indexcontroller";
+				window.location.href = baseUrls + "pagescontroller/sessionControl";
 			}
 		},
 	});
@@ -100,7 +106,19 @@ const fileds_for_validation = [
 		onlyNumber: true,
 	},
 	{
+		id: "#searchId",
+		errorText: "live search field",
+		regExp: /^[0-9 ]{0,10}$/,
+		onlyNumber: true,
+	},
+	{
 		id: "#searchClientPhone",
+		errorText: "live search field",
+		regExp: /^[0-9 ]{0,10}$/,
+		onlyNumber: true,
+	},
+	{
+		id: "#searchPhone",
 		errorText: "live search field",
 		regExp: /^[0-9 ]{0,10}$/,
 		onlyNumber: true,
@@ -638,7 +656,7 @@ $(document).on("click", "#editBtn", function () {
 	tab.show();
 
 	$.ajax({
-		url: baseUrls + "editController/edit",
+		url: baseUrls + "insertcontroller/edit",
 		type: "POST",
 		data: { id: editId, table: table_name, key: key },
 		success: function (data) {
@@ -724,7 +742,7 @@ function stateChange() {
 	let state_id = $("#stateId").val();
 
 	$.ajax({
-		url: baseUrls + "districtcontroller",
+		url: baseUrls + "dropdowncontroller/district",
 		type: "POST",
 		data: { state_id },
 		success: function (data) {
@@ -738,7 +756,7 @@ function stateChange() {
 
 // District data on change of state end ***********************************************************
 
-// Deleteing data from Databse start *******************
+// Deleteing data from Database start *******************
 
 $(document).on("click", "#deleteBtn", function () {
 	let deleteid = $(this).data("deleteid");
@@ -774,14 +792,22 @@ $(document).on("click", "#deleteBtn", function () {
 					type: "POST",
 					data: { deleteid: deleteid, tableName: tableName, key: key },
 					success: function (data) {
-						console.log(data);
-						getTable();
+						if(data==1){
+							getTable();
+						}
 					},
+					error: function(){
+						swalWithBootstrapButtons.fire({
+							title: "Cancelled",
+							text: "You cannot delete!",
+							icon: "error",
+						});
+					}
 				});
 			} else if (result.dismiss === Swal.DismissReason.cancel) {
 				swalWithBootstrapButtons.fire({
 					title: "Cancelled",
-					text: "Your imaginary file is safe :)",
+					text: "Your data is safe :)",
 					icon: "error",
 				});
 			}
@@ -864,7 +890,7 @@ $("#clientNameId").autocomplete({
 		let value = request.term; // `term` is the query the user is typing
 
 		$.ajax({
-			url: baseUrls + "autocomplete/client_autocomplete",
+			url: baseUrls + "dropdowncontroller/client_autocomplete",
 			type: "POST",
 			data: { name: value },
 			success: function (data) {
@@ -924,7 +950,7 @@ function getitems(e) {
 			console.log(idArr);
 
 			$.ajax({
-				url: baseUrls + "autocomplete/item_autocomplete",
+				url: baseUrls + "dropdowncontroller/item_autocomplete",
 				type: "POST",
 				data: { item_name: value, arrId: idArr },
 				success: function (data) {
@@ -1251,46 +1277,80 @@ function sendMail() {
 			processData: false,
 			contentType: false,
 			beforeSend: function () {
-				$(".mail_send_container").html(`<button class="btn btn-success" type="button" disabled>
+				$(".mail_send_container")
+					.html(`<button class="btn btn-success" type="button" disabled>
   					<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
   					<span role="status">Sending...</span>
 				</button>`);
 			},
 			success: function (data) {
 				data = JSON.parse(data);
-				if(data.success == true){
+				if (data.success == true) {
 					console.log("Mail sended");
 					$("#subjectId").val("");
 					$("#messageId").val("");
 					$(".mail_send_container").html();
-					$(".mail_send_container").html(`<button type="button" class="btn btn-success" onclick="sendMail()" >Send mail</button>`);
+					$(".mail_send_container").html(
+						`<button type="button" class="btn btn-success" onclick="sendMail()" >Send mail</button>`
+					);
 					Swal.fire({
 						title: "Mail Sended Successfully!",
 						icon: "success",
-						draggable: false
-					  });
-				}
-				else{
+						draggable: false,
+					});
+				} else {
 					Swal.fire({
 						title: "Unable to send Mail ",
 						icon: "error",
-						draggable: false
-					  });
+						draggable: false,
+					});
 				}
 			},
 		});
 	}
 }
-// side bar hide show 
-function hideSideBar(){
+// side bar hide show
+$(".content_wrapper").removeClass("col-md-10").addClass('col');
 
+function hideSideBar() {
 	$(".sidebar_wrapper").toggle("slide", { direction: "left" }, 1000);
-  
-  }
-
-
-function dashboardData(){
-
-	
-
 }
+
+// Dashboard all masert details
+function dashboardData() {
+	$.ajax({
+		url: baseUrls+"tablecontroller/dashboarddata",
+		type: "POST",
+		success: function(data){
+			data = JSON.parse(data);
+			$(".bold-number").each(function(){
+				let dt = $(this).attr("id");
+				$(this).text(data[dt]);
+
+			})
+		}
+	});
+}
+
+
+if(localStorage.getItem("tabName") == '#dashoardTab'){
+	dashboardData();
+}
+
+// responsivenes off nav bar
+$(window).resize(function() {
+
+	if ($(window).width() < 768) {
+  
+		$(".user-profile-image").hide();
+		$(".user-name").hide();
+		$(".sidebar_wrapper").slideUp(1000);
+  
+	} else {
+  
+	  $(".user-profile-image").show();
+		$(".user-name").show();
+  
+	}
+  
+  });

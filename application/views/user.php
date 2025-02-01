@@ -73,7 +73,7 @@ include_once "templates/header.php" ?>
                             <!-- select limit  -->
                             <div>
                                 <label for="rowId" class="form-label">Select no. of rows</label>
-                                <select id="rowId" class="form-select">
+                                <select id="rowId" class="form-select-sm">
                                     <option value="5">5</option>
                                     <option value="10">10</option>
                                     <option value="15">15</option>

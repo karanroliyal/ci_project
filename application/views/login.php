@@ -1,7 +1,7 @@
 <?php
 
 if(isset($_SESSION['email'])){
-    header("location:".base_url()."indexcontroller");
+    header("location:".base_url()."pagescontroller/sessionControl");
 }
 
 ?>

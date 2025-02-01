@@ -34,9 +34,8 @@ class EmailController extends CI_Controller
 
         $this->email->from('karanroliyal12@gmail.com', $mailData['recipient_name']);
         $this->email->to($mailData['mail_to']);
+        
         $this->email->attach($mailData['pdf_file_path']);
-        // $this->email->cc('another@another-example.com');
-        // $this->email->bcc('them@their-example.com');
 
         $this->email->subject($mailData['subject']);
         $this->email->message($mailData['message']);

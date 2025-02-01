@@ -25,7 +25,7 @@ class pdfController extends CI_Controller
     public function mailPdf()
     {
 
-        $id['id'] = $_POST['mail'];
+            $id['id'] = $_POST['mail'];
             $html = $this->load->view('pdf', $id, true);
             $mpdf = new \Mpdf\Mpdf();
             $mpdf->showImageErrors = true;

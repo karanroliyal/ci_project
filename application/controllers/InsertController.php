@@ -303,4 +303,14 @@ class InsertController extends CI_Controller
 
     }
 
+    // Edit button 
+    public function edit(){
+
+        $data = $this->input->post();
+        $this->load->model('insertmodel');
+        $data_from_model = $this->insertmodel->edit_data($data);
+        echo $data_from_model;
+
+    }
+
 }
