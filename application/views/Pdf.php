@@ -105,10 +105,18 @@ echo $data;
 
 <hr>
 
-<div style='margin-left: 550px;font-family: Arial;'>
+<div style='margin-left: 500px;font-family: Arial;'>
 
-    <h4>Subtotal: <span>₹<?=$client_data[0]->total_amount?></span></h4>
-    <h4><span style="font-weight:bold" >Total:</span> <span>₹<?=$client_data[0]->total_amount?></span></h4>
+    <h4 style="white-space: nowrap;">Subtotal: <span>₹<?=$client_data[0]->total_amount?></span></h4>
+    <h4><span style="font-weight:bold" >Total:</span> <span>₹<?=$client_data[0]->total_amount?>/-</span></h4>
+    <h4><?php 
+    
+    $CI->load->helper('number');
+    numberFunc($client_data[0]->total_amount);
+
+    
+    ?></h4>
+
 
 </div>
 

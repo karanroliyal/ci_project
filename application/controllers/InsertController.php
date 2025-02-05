@@ -205,13 +205,16 @@ class InsertController extends CI_Controller
     // for invoice master only
     public function insertInvoice(){
 
+        $this->load->helper('uniqueness');
+
+        $is_unique_invoice_number = uniqueHelper('invoice_number', 'invoice_master' , $this->input->post('invoice_number') , 'invoice_id' , $this->input->post('invoice_id') );
 
         $validation = [
 
             [
                 'field' => 'invoice_number',
                 'label' => 'Invoice number',
-                'rules' => 'required|trim|min_length[2]|regex_match[/^[a-zA-Z0-9]+$/]|is_unique[invoice_master.invoice_number]'
+                'rules' => 'required|trim|min_length[2]|regex_match[/^[a-zA-Z0-9]+$/]'.$is_unique_invoice_number
             ],
             [
                 'field' => 'name',
@@ -229,30 +232,10 @@ class InsertController extends CI_Controller
                 'rules' => 'required|trim|valid_emails'
             ],
             [
-                'field' => 'invoice_number',
-                'label' => 'Invoice number',
-                'rules' => 'required|trim|min_length[3]|max_length[10]|regex_match[/^[A-Za-z0-9]{3,10}$/]'
-            ],
-            // [
-            //     'field' => 'item_name[]',
-            //     'label' => 'Item name',
-            //     'rules' => 'required|trim|min_length[2]|regex_match[/^[a-zA-Z- ]+$/]'
-            // ],
-            [
                 'field' => 'address',
                 'label' => 'Address',
                 'rules' => 'required|trim',
             ],
-            // [
-            //     'field' => 'item_price[]',
-            //     'label' => 'Item price',
-            //     'rules' => 'required|trim',
-            // ],
-            // [
-            //     'field' => 'amount[]',
-            //     'label' => 'Amount',
-            //     'rules' => 'required|trim|numeric',
-            // ],
             [
                 'field' => 'total_amount',
                 'label' => 'Total amount',
