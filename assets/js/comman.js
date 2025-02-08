@@ -1076,45 +1076,45 @@ function sendInvoiceData() {
 
 	let checkForm = 1;
 
-	// $("#tableData input, #tableData select").each(function () {
-	// 	if ($(this).is("input[name=id]")) {
-	// 		return; // This will skip the current loop for id
-	// 	}
-	// 	if ($(this).val() == "" || null || undefined) {
-	// 		if ($(".add-user").hasClass("d-none") && $("input:file").val() == "") {
-	// 			return;
-	// 		}
-	// 		if (
-	// 			$(".add-user").hasClass("d-none") &&
-	// 			$("input:password").val() == ""
-	// 		) {
-	// 			return;
-	// 		}
-	// 		let filedname = $(this).attr("name");
-	// 		filedname = filedname.replace(/_/g, " ");
-	// 		filedname = filedname.replace(/[[]]/g, " ");
+	$("#tableData input, #tableData select").each(function () {
+		if ($(this).is("input[name=id]")) {
+			return; // This will skip the current loop for id
+		}
+		if ($(this).val() == "" || null || undefined) {
+			if ($(".add-user").hasClass("d-none") && $("input:file").val() == "") {
+				return;
+			}
+			if (
+				$(".add-user").hasClass("d-none") &&
+				$("input:password").val() == ""
+			) {
+				return;
+			}
+			let filedname = $(this).attr("name");
+			filedname = filedname.replace(/_/g, " ");
+			filedname = filedname.replace(/[[]]/g, " ");
 
-	// 		$(this)
-	// 			.parent(".mb-3")
-	// 			.find(".error")
-	// 			.text(capitalizeFirstLetter(filedname) + " field is required");
-	// 		checkForm = 0;
-	// 	}
-	// 	if ($(this).is(":checkbox, :radio")) {
-	// 		let name = $(this).attr("name");
-	// 		if (name && $("input[name='" + name + "']:checked").length === 0) {
-	// 			$(this)
-	// 				.closest(".form-check")
-	// 				.parent()
-	// 				.find("small")
-	// 				.text("Field is required");
-	// 			checkForm = 0;
-	// 		}
-	// 	}
-	// 	if (!$(".error").text() == "") {
-	// 		checkForm = 0;
-	// 	}
-	// });
+			$(this)
+				.parent(".mb-3")
+				.find(".error")
+				.text(capitalizeFirstLetter(filedname) + " field is required");
+			checkForm = 0;
+		}
+		if ($(this).is(":checkbox, :radio")) {
+			let name = $(this).attr("name");
+			if (name && $("input[name='" + name + "']:checked").length === 0) {
+				$(this)
+					.closest(".form-check")
+					.parent()
+					.find("small")
+					.text("Field is required");
+				checkForm = 0;
+			}
+		}
+		if (!$(".error").text() == "") {
+			checkForm = 0;
+		}
+	});
 
 	if (checkForm == 1) {
 		console.log("sended");
