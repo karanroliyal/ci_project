@@ -35,7 +35,6 @@ function numberFunc($number)
     for ($i = 0; $i < $length; $i++) {
 
 
-
         $limit =  $objCate[$length - $i];
         $imaginary_length = $length - $i;
         $categorie = $objVal[$length - $i];
@@ -98,7 +97,7 @@ function numberFunc($number)
 
     }
     
-    array_push($point_arr, 'Paise Only/-');
+    array_push($point_arr, 'Rupees Only/-');
 
     // print_r($point_arr);
     // print_r($number_string_array);

@@ -139,7 +139,6 @@ class TableModel extends CI_Model
         }
     }
 
-
     function delete($deleteData)
     {
 

@@ -989,6 +989,7 @@ function getitems(e) {
 			$(this).parents(".duplicate-row").find(".item_id").val(ui.item.id);
 			$(this).parents(".duplicate-row").find(".quantityAddId").val(1);
 			$(this).parents(".duplicate-row").find(".quantityAddId").trigger("input");
+			
 		},
 	});
 }
