@@ -49,9 +49,9 @@ function pageination_builder($liveFormData , $table_name , $current_page_opened 
 
     // Generate pagination buttons with a range of 3 pages
     $ulData = " <nav aria-label='Page navigation example'  >
-                    <ul class='pagination my-pagination mb-0' id='{$pages}'>
-                        <li class='page-item'>
-                            <a class='page-link prev'  aria-label='Previous'>
+                    <ul class='pagination my-pagination mb-0 {$pages}'  >
+                        <li class='page-item'  >
+                            <a class='page-link prev'  aria-label='Previous' (click)='totalPages(totalPages.value)' #totalPages [value]={$pages} >
                                 <span aria-hidden='true'>&laquo;</span>
                             </a>
                         </li>";
@@ -78,5 +78,6 @@ function pageination_builder($liveFormData , $table_name , $current_page_opened 
                     </ul>
                 </nav>";
 
-                return $ulData;
+                return json_encode(['totalPages'=>$pages , 'current_page_opened'=>$current_page_opened ]);
+                // return $ulData;
 }

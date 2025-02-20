@@ -66,9 +66,9 @@ class TableModel extends CI_Model
         $this->db->order_by($sort_on_column, $order_by);
          $this->db->select($column_names_of_table)->from($table_name);
 
-         if($table_name == 'user_master'){
-            $this->db->where('id !=' , $_SESSION['id']);
-         }
+        //  if($table_name == 'user_master'){
+        //     $this->db->where('id !=' , $_SESSION['id']);
+        //  }
          
         $this->db->group_start();
         foreach ($liveFormData as $key => $value) {
@@ -95,44 +95,46 @@ class TableModel extends CI_Model
 
             $table = "";
             foreach ($result->result_array() as $row) {
-                $table .= "<tr><td>$offset</td>";
-                for ($i = 0; $i < count($column_names_of_table); $i++) {
+                // $table .= "<tr><td>$offset</td>";
+                // for ($i = 0; $i < count($column_names_of_table); $i++) {
 
-                    if($column_names_of_table[$i] == 'image'){
+                //     if($column_names_of_table[$i] == 'image'){
 
-                        $table .= "<td> <img class='table-image' src='" . base_url().$image_path_get."/".$row[$column_names_of_table[$i]] . "'></td>";
+                //         $table .= "<td> <img class='table-image' src='" . base_url().$image_path_get."/".$row[$column_names_of_table[$i]] . "'></td>";
 
-                    }
-                    elseif($column_names_of_table[$i] == 'item_price'){
-                        $table .= "<td> ₹" .  ucwords($row[$column_names_of_table[$i]]) . "</td>";
-                    }
-                    else{
-                        $table .= "<td>" . ucwords($row[$column_names_of_table[$i]]) . "</td>";
-                    }
+                //     }
+                //     elseif($column_names_of_table[$i] == 'item_price'){
+                //         $table .= "<td> ₹" .  ucwords($row[$column_names_of_table[$i]]) . "</td>";
+                //     }
+                //     else{
+                //         $table .= "<td>" . ucwords($row[$column_names_of_table[$i]]) . "</td>";
+                //     }
 
-                }
-                $offset++;
+                // }
+                // $offset++;
 
-                // for pdf and mail columns
-                if($table_name=='invoice_master'){
-                    $table .=  "<td class='text-center' ><a href='".base_url()."pdfcontroller?myId={$row[$column_names_of_table[0]]}' target='_blank' ><i class='bi bi-file-earmark-pdf-fill text-danger' data-pdfId='{$row[$column_names_of_table[0]]}'></i></a></td>
-                                <td class='text-center' ><i data-bs-toggle='modal' data-bs-target='#exampleModal' class='bi bi-envelope-plus-fill text-success mailSend' data-mailId='{$row[$column_names_of_table[0]]}'></i></td>";
-                }
+                // // for pdf and mail columns
+                // if($table_name=='invoice_master'){
+                //     $table .=  "<td class='text-center' ><a href='".base_url()."pdfcontroller?myId={$row[$column_names_of_table[0]]}' target='_blank' ><i class='bi bi-file-earmark-pdf-fill text-danger' data-pdfId='{$row[$column_names_of_table[0]]}'></i></a></td>
+                //                 <td class='text-center' ><i data-bs-toggle='modal' data-bs-target='#exampleModal' class='bi bi-envelope-plus-fill text-success mailSend' data-mailId='{$row[$column_names_of_table[0]]}'></i></td>";
+                // }
 
-                $table .= "<td class='text-center'>
-                <button class='btn btn-primary rounded-circle' id='editBtn'  data-editid='{$row[$column_names_of_table[0]]}' data-key='" . array_values($column_names_of_table)[0] . "' data-tableName='{$table_name}'><i class='bi bi-pencil-fill'></i></button>
-                </td>
-                <td class='text-center'>
-                <button class='btn btn-danger rounded-circle' id='deleteBtn' data-key='" . array_values($column_names_of_table)[0] . "' data-deleteid='{$row[$column_names_of_table[0]]}' data-tableName='{$table_name}'><i class='bi bi-x-square-fill' ></i></button>
-                </td>
-                </tr>";
+                // $table .= "<td class='text-center'>
+                // <button class='btn btn-primary rounded-circle' id='editBtn'  data-editid='{$row[$column_names_of_table[0]]}' data-key='" . array_values($column_names_of_table)[0] . "' data-tableName='{$table_name}'><i class='bi bi-pencil-fill'></i></button>
+                // </td>
+                // <td class='text-center'>
+                // <button class='btn btn-danger rounded-circle' id='deleteBtn' data-key='" . array_values($column_names_of_table)[0] . "' data-deleteid='{$row[$column_names_of_table[0]]}' data-tableName='{$table_name}'><i class='bi bi-x-square-fill' ></i></button>
+                // </td>
+                // </tr>";
             }
 
             $this->load->helper('pagination');
             $ulData = pageination_builder($liveFormData, $table_name, $current_page_opened, $limit , $join_column , $join_on);
 
+            $ulData = json_decode($ulData);
 
-            return json_encode(['table' => $table, 'pagination' => $ulData, 'query' => $this->db->last_query()]);
+            return json_encode(['table' => $result->result_array(), 'pagination' => $ulData, 'query' => $this->db->last_query()]);
+            // return json_encode(['table' => $table, 'pagination' => $ulData, 'query' => $this->db->last_query()]);
         } else {
 
             return json_encode(['table' => "<td class='text-center' colspan='" . (count($column_names_of_table) + 3) . "'><h4>No record found</h4></td>", 'pagination' => "" , 'query' => $this->db->last_query()]);

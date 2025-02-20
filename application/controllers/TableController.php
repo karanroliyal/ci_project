@@ -12,7 +12,9 @@ class TableController extends CI_Controller{
 
     public function index(){
 
-        $livedata = $this->input->post();
+        // $livedata = $this->input->post();
+        $livedata = file_get_contents("php://input");
+        $livedata = json_decode($livedata, TRUE);
 
         $this->load->model('tablemodel');
 
